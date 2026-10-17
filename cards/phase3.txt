@@ -1,0 +1,28 @@
+What does an LLM do? || Predicts the next piece of text from the text before it. It has no memory between calls and no access to your systems unless you give it any.
+What is a hallucination? || A confident answer that is wrong or invented.
+What is a token, roughly? || A piece of text, about 4 characters or 0.75 of an English word. You pay per token.
+What is a context window? || How many tokens the model can see at once.
+System prompt vs user prompt? || The system prompt sets the role and rules. The user prompt is the task and the data.
+What is structured output, and what must you do with it? || Asking for JSON in a fixed shape. Always validate it, because models sometimes break the format.
+What is tool calling? || You describe functions to the model. It answers "call this tool with these arguments", your system runs it, and the result goes back to the model.
+Workflow vs agent? || A workflow has steps you fixed in advance. An agent is an LLM in a loop that decides which tools to use. Prefer a workflow when the steps are known.
+What is prompt injection? || Text from outside (an email, a chat message) that contains instructions the model may follow. Defend with small power, validation, no secrets and human approval for risky actions.
+Why a low temperature for classification? || Less randomness gives more consistent answers.
+Why include an "other" category in a classifier? || For the unexpected, so the model isn't forced into a wrong category.
+What should classifier test messages include? || Hard cases: rude, another language, two topics, empty.
+Accuracy, precision, recall? || Accuracy: correct divided by total. Precision: of what the AI put in a category, the share that belongs. Recall: of what belongs there, the share the AI found.
+What does a confusion matrix show? || Which categories get mixed up with which.
+Why keep a test set you never tune on? || Otherwise you fit your own tests and the numbers overstate how good it is.
+Why re-run the same tests after a prompt change? || A change that fixes one case can break others. Compare with your log.
+How does an agent choose a tool? || From each tool's name and description, so descriptions act like short prompts.
+How much power should an agent have? || The least it needs. Risky actions such as sending or deleting need human approval.
+What is RAG? || Find the most relevant pieces of your documents first, then give them to the model with the question.
+Chunking, embeddings, vector store? || Documents are split into chunks, each chunk becomes numbers that capture meaning, and the store finds chunks closest in meaning to a question.
+Why is Simple Vector Store unfit for clients? || It forgets everything when n8n restarts and is for development only.
+What is MCP? || The Model Context Protocol, an open standard for connecting AI applications to tools and data.
+n8n's two MCP directions? || The MCP Client Tool lets an agent call external tools. The MCP Server Trigger lets your workflow act as an MCP server.
+Three ways an AI workflow fails? || The API errors, the output format breaks, or the answer is confidently wrong.
+What to do with unsure AI output? || Send it to a human review route instead of guessing.
+Cost per call formula? || (input tokens x input price + output tokens x output price) divided by 1,000,000, with prices per million tokens.
+Three parts of an AI quote? || Your build fee (once), the AI usage (on the client's own paid account), and hosting or maintenance (monthly).
+Three Upwork scam signs? || Asks you to pay or buy something first, moves you off the platform, or asks for ID photos or unknown downloads.

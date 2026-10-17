@@ -1,0 +1,24 @@
+What are the parts of an HTTP request? || Method, URL, headers, and sometimes a body.
+What are the parts of an HTTP response? || Status code, headers and a body (usually JSON).
+GET vs POST? || GET puts parameters in the URL and should only read. POST puts data in the body and changes or triggers something. HTTPS encrypts both.
+Does POST hide your data? || No. HTTPS encrypts both. POST only keeps data out of the URL, browser history and server logs.
+What do 200 and 201 mean? || Success, and created.
+What do 400, 401, 403 and 404 mean? || Bad request, not authenticated, not allowed, not found.
+What does 429 mean? || Too many requests (rate limit). Wait, then retry.
+What does a 5xx status mean? || The server broke.
+Which header says the body is JSON? || Content-Type: application/json
+How is an API key usually sent? || In a header: Authorization: Bearer <key>, or x-api-key.
+What is JSON? || Text made of objects { }, arrays [ ], strings, numbers, true or false, and null. Almost every API uses it.
+What is a webhook? || A reverse API call. The service sends an HTTP POST to your URL when something happens.
+requests.post with json= vs data=? || json= sends JSON and sets the header. data= sends a form.
+What does response.raise_for_status() do? || Raises an error on a 4xx or 5xx so failures don't pass silently.
+Why set a timeout on requests? || Without one a script can hang forever.
+What is an item in n8n? || One JSON object flowing through a workflow. A node usually runs once per item.
+What is an expression in n8n? || Code between {{ and }} that reads data, such as {{ $json.email }}.
+n8n test URL vs production URL? || The test URL (/webhook-test/...) works only while listening for a test event. The production URL (/webhook/...) works only when the workflow is active or published.
+Why can't a service on the internet call localhost? || localhost is only your own computer. You need a public URL.
+Git: working folder, staging, history? || You edit files in the working folder, git add stages them, git commit saves them to the history.
+What are a branch and a merge? || A branch is a separate line of work. A merge brings it back into main.
+You committed a secret. What now? || Delete or replace the key. Deleting the file later does not remove it from history.
+How do you read a Python error? || From the bottom. The last line says what went wrong, the line above says where.
+Two debugging habits for nested JSON? || type(x) and print(json.dumps(x, indent=2)).

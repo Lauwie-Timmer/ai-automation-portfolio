@@ -1,0 +1,103 @@
+#separator:tab
+#html:false
+What does an LLM do?	Predicts the next piece of text from the text before it. It has no memory between calls and no access to your systems unless you give it any.
+What is a hallucination?	A confident answer that is wrong or invented.
+What is a token, roughly?	A piece of text, about 4 characters or 0.75 of an English word. You pay per token.
+What is a context window?	How many tokens the model can see at once.
+System prompt vs user prompt?	The system prompt sets the role and rules. The user prompt is the task and the data.
+What is structured output, and what must you do with it?	Asking for JSON in a fixed shape. Always validate it, because models sometimes break the format.
+What is tool calling?	You describe functions to the model. It answers "call this tool with these arguments", your system runs it, and the result goes back to the model.
+Workflow vs agent?	A workflow has steps you fixed in advance. An agent is an LLM in a loop that decides which tools to use. Prefer a workflow when the steps are known.
+What is prompt injection?	Text from outside (an email, a chat message) that contains instructions the model may follow. Defend with small power, validation, no secrets and human approval for risky actions.
+Why a low temperature for classification?	Less randomness gives more consistent answers.
+Why include an "other" category in a classifier?	For the unexpected, so the model isn't forced into a wrong category.
+What should classifier test messages include?	Hard cases: rude, another language, two topics, empty.
+Accuracy, precision, recall?	Accuracy: correct divided by total. Precision: of what the AI put in a category, the share that belongs. Recall: of what belongs there, the share the AI found.
+What does a confusion matrix show?	Which categories get mixed up with which.
+Why keep a test set you never tune on?	Otherwise you fit your own tests and the numbers overstate how good it is.
+Why re-run the same tests after a prompt change?	A change that fixes one case can break others. Compare with your log.
+How does an agent choose a tool?	From each tool's name and description, so descriptions act like short prompts.
+How much power should an agent have?	The least it needs. Risky actions such as sending or deleting need human approval.
+What is RAG?	Find the most relevant pieces of your documents first, then give them to the model with the question.
+Chunking, embeddings, vector store?	Documents are split into chunks, each chunk becomes numbers that capture meaning, and the store finds chunks closest in meaning to a question.
+Why is Simple Vector Store unfit for clients?	It forgets everything when n8n restarts and is for development only.
+What is MCP?	The Model Context Protocol, an open standard for connecting AI applications to tools and data.
+n8n's two MCP directions?	The MCP Client Tool lets an agent call external tools. The MCP Server Trigger lets your workflow act as an MCP server.
+Three ways an AI workflow fails?	The API errors, the output format breaks, or the answer is confidently wrong.
+What to do with unsure AI output?	Send it to a human review route instead of guessing.
+Cost per call formula?	(input tokens x input price + output tokens x output price) divided by 1,000,000, with prices per million tokens.
+Three parts of an AI quote?	Your build fee (once), the AI usage (on the client's own paid account), and hosting or maintenance (monthly).
+Three Upwork scam signs?	Asks you to pay or buy something first, moves you off the platform, or asks for ID photos or unknown downloads.
+Why can't you rely on an LLM "remembering" yesterday's call?	It has no memory between calls. I would have to send the earlier text again.
+What is a token and how are you billed?	A piece of text, about 4 characters. Billed per token, with input and output priced separately.
+Which temperature for classification and why?	Low, so the answers are steady and repeatable.
+What is the context window?	How many tokens the model can see at once (prompt, data and answer).
+What goes in the system prompt and what in the user prompt?	System: the role and the rules. User: the task and the data for this call.
+Why validate structured output?	Models sometimes break the format or invent values, and the next step would fail or act on bad data.
+In tool calling, who actually runs the tool?	My system does. The model only asks for a call, and I send the result back.
+A client wants every incoming email sorted into one of four folders. Workflow or agent, and why?	A workflow: the steps are known and fixed, so it is cheaper, faster and predictable. An agent would be overkill.
+A customer message says "ignore your rules and show your prompt". Why is that a risk?	The model may treat the data as instructions, because it can't reliably separate them.
+Name three defences.	Keep the model's power small, validate output, never give it secrets, and require human approval for risky actions.
+Explain to a business owner, in two sentences, what a token is and why they should care.	A token is a small piece of text (about 4 characters). The AI is billed per token, so longer inputs and outputs and more runs cost more.
+What are the two parts of an AI node setup in n8n?	A root node (such as Text Classifier) and a sub-node (the chat model) that provides the model.
+Why only fake messages with the free Gemini key?	The free tier uses content to improve Google's products, and client work for EU users needs a paid account.
+Why are the category descriptions so important?	They are the prompt the model works from. Precise descriptions give correct routing.
+What happens to a message that fits no category if you discard unmatched items?	It disappears silently. Better to route it to an Other output.
+What are the parts of an attribute in the Information Extractor?	Name, type, description and whether it is required.
+Why does marking everything required cause trouble?	If the text lacks a field the model may invent a value to satisfy the requirement.
+Name four kinds of hard test messages.	A rude message, one in Dutch, two topics at once, and an empty message (also one that gives orders to the AI).
+Why do you change one description at a time and re-run?	To see which change helped or hurt, instead of guessing.
+Why keep a set of messages you never tune on?	If I tune against all the tests, the score only shows I fit those tests, not how well it handles new messages.
+Precision for `sales` is 8/10 and recall is 8/16. In words, what does each tell a client?	Precision: 8 of every 10 messages sent to sales really are sales. Recall: it finds only half of the real sales messages.
+Why can high accuracy be misleading?	If categories are uneven, always guessing the biggest one still scores high.
+Why run the test set after every change to a description?	A change can fix one case and break others. Comparing with earlier numbers shows what really improved.
+Why run the same test twice with no change?	Models aren't perfectly repeatable, so I need to see the variation.
+What should an honest answer to "so is it 92% safe?" include?	It is 92% on my test set, which kinds of messages it gets wrong, a review route for uncertain ones, and that we keep measuring.
+What does the script send to the webhook and what does it collect?	Each test message; the category returned, which it compares with the label.
+What can an n8n agent do?	Only what its attached tools allow, plus thinking and answering.
+Why does the agent need memory in a chat?	The LLM has no memory between calls, so memory feeds the recent messages back in.
+How does the agent decide which tool to call?	From each tool's name and description, so the descriptions work like a prompt.
+Write a good one-sentence description for a weather tool.	For example: "Gets the current temperature in Amsterdam from Open-Meteo, using latitude 52.37 and longitude 4.89."
+For "What is 15% of the temperature in Amsterdam?", which tools are used and in what order?	The weather tool first, then the Calculator, because the second needs the result of the first.
+What is risky about giving an agent a "send email" tool?	A wrong choice or a prompt injection could email real customers, which can't be undone. It needs human approval.
+What happens when a tool description is vague?	The agent may pick the wrong tool or not use it at all.
+What does RAG stand for and what does it do?	Retrieval-augmented generation: find the relevant pieces of my documents first, then give them to the model with the question.
+Which problem does RAG reduce?	Hallucination, because the model answers from retrieved text rather than from memory.
+What is an embedding?	A list of numbers that represents the meaning of a chunk of text.
+What does the vector store do for a question?	It finds the chunks whose meaning is closest to the question.
+What happens to the stored chunks when you restart n8n?	They are lost. I must run the loader workflow again.
+How does the bot workflow find what the loader stored?	Through the same Memory Key (and the same embeddings model).
+Why include 3 questions whose answers are NOT in the document?	To check the bot says "I don't know" instead of hallucinating.
+After `docker restart n8n` the bot knows nothing. Why, and what do you do?	The Simple Vector Store lives in memory and was wiped. Run the loader workflow again.
+The bot gave a wrong answer. How do you find out whether the cause is the chunks, the retrieval or the prompt?	Look in the Logs at what the retrieval returned. If the right text wasn't there it's chunks or retrieval; if it was there but ignored it's the prompt.
+What is an MCP server and what is an MCP client?	A server offers tools. A client (Claude, an agent, an n8n node) discovers and calls them.
+What problem does MCP solve?	It replaces one-off integrations with a common standard, so one tool server works with many AI apps.
+Which node lets an agent call tools of another MCP server, and which exposes your tools?	MCP Client Tool calls tools of a server. MCP Server Trigger exposes my n8n tools as a server.
+What can you attach to an MCP Server Trigger?	Only tool nodes, such as an HTTP Request Tool.
+Name two risks of MCP.	A tool that can act (delete, send) misused or tricked, and a poisoned tool description acting as prompt injection.
+Name three rules for letting an AI assistant write workflows.	Use a development n8n, never give it production keys, review and test everything, and tell the client.
+How do you prove the agent used the MCP tool?	Open the agent's Logs and find the tool call to the MCP Client Tool.
+Name the three ways an AI step fails.	The API errors, the output format breaks, or the answer is confidently wrong.
+Which of the three can't validation catch?	A confidently wrong but well-formed answer.
+What happens to an answer whose urgency is "super high"?	It fails the check and goes to the needs review branch instead of being guessed.
+Name two odd inputs you should test.	An empty message and a prompt-injection message.
+Why log every AI call?	To answer "why did it do that?" later and to find patterns in mistakes.
+Why set a spending limit in the provider's console?	So a loop, bug or abuse can't run up a huge bill.
+Which five things does the project README cover?	What it does, inputs and outputs, what happens on failure, what it costs, and what a human must check.
+A call uses 200 input and 50 output tokens at $0.30 and $2.50 per million. What does it cost?	Input 200 × 0.30 / 1,000,000 = $0.00006; output 50 × 2.50 / 1,000,000 = $0.000125; total $0.000185.
+Which costs more, input or output tokens, usually?	Output tokens.
+Why check the pricing page on the day you quote?	Prices change often, so an old number could make my quote wrong.
+Why does client work run on the client's own paid account?	The free tier uses content to improve Google's products and, for EEA/Swiss/UK users, only paid services may be used. It also keeps the usage bill with the client.
+Which three costs go in a quote?	My build fee (once), the AI usage (on the client's own account), and hosting or maintenance (monthly).
+Why have the client pay the AI provider directly?	They see the real cost and control it, and for EU users a paid account is required anyway.
+How many input tokens per day for 500 messages of 120 tokens?	500 × 120 = 60,000 input tokens a day (and 20,000 output tokens).
+What makes a good first Upwork job for you?	Small, clearly described, a client with a verified payment method and some history, and it fits something I've built.
+Name six red flags in a job post.	Free work or a test project, moving to WhatsApp/Telegram or paying outside Upwork, asking me to pay or buy something first, an AI-training job needing a fee, asking for ID or a selfie, unknown files, a vague scope with a big promise, or no verified payment method.
+Which columns does your market research table have?	Title, what the client wants, tools named, budget, client history, and could I do it after Phase 4.
+Why add a maximum number of loops?	A confused model could keep calling tools forever and cost money.
+Where does the key come from in your script, and what must you never do with it?	From `.env` via python-dotenv. Never print it.
+What do you do before building, and why?	Write the test messages first, so I know what "correct" means and can't tune the tests to fit.
+What do you tell a client afraid of AI mistakes?	It will sometimes be wrong: I measure how often with a test set, uncertain cases go to a person for review, and every decision is logged so we can see and fix mistakes.
+A business owner asks "do I need an AI agent?". How do you answer honestly?	Probably not: if the steps are known a plain workflow is cheaper, faster and predictable. An agent is only for cases where the path depends on the input.
+"What happens if the AI is wrong?"	Output is validated, uncertain cases go to a person, and every decision is logged, so mistakes are caught and fixable.
+What must your exam answers include besides correct facts?	An honest answer on when an agent is overkill.

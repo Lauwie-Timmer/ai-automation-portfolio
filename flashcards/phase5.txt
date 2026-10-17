@@ -1,0 +1,90 @@
+#separator:tab
+#html:false
+What is the goal of a discovery call?	For you to understand the client's problem, and for them to see you listen. It is not a pitch.
+The seven parts of a discovery call?	Agenda, the problem, the impact, current process and tools, constraints, what success looks like, and the next step.
+Why not quote a price on the first call?	The scope isn't clear yet. Say you'll send a written fixed price with what's included.
+What do you do when you don't know an answer on a call?	Say so, say what you have built that is close, and say how you'd check. Never bluff.
+How do you get a client to say more?	Ask "can you tell me more?" or repeat their last few words as a question, and accept silence.
+What does one Connect cost, and how many are free?	$0.15 each. Basic accounts get 10 free a month.
+What does the Rising Talent badge give?	More visibility and a one-time 30 free Connects.
+Name four scam or red flag signs on Upwork.	Pay a fee first, move to WhatsApp or Telegram, ID photos or selfies, unknown file downloads, test projects, crypto.
+How do you score a job before applying?	1 to 5 on fit, and apply only to 4 or higher.
+Proposal structure?	Their problem in your words, your approach, one relevant project, one clarifying question, and a next step. About 120 words.
+How do you estimate a fixed price?	List tasks, estimate hours, add about 50% buffer, multiply by your rate, and add the platform fee.
+What goes in a scope?	What's included, what isn't, rounds of changes, what you need from the client and when. Anything outside is a new quote.
+Why use milestones?	They protect both sides, and you don't start work on a milestone that isn't funded.
+Hourly vs fixed protection on Upwork?	Fixed price uses funded milestones (escrow). Hourly protection generally depends on tracking time with Upwork's own tracker. Check the Help Center.
+Roughly what is Upwork's fee now?	Variable, around 10% for most freelancers, and shown before you apply.
+What does a package contain?	Name, who it is for, what's included, what isn't, delivery time, price, and what you need from the client.
+What goes in your AI-use policy?	Tools you use, what data each sees, what you never send, how you mask personal data, and a consent sentence for clients.
+Why can't client work run on your free Gemini key?	Google's terms require paid services for anything made available to users in the EEA, Switzerland or the UK.
+What did Upwork's terms change on 5 Jan 2026?	It may use platform content to train its AI unless you change your AI Preferences. Read the current terms yourself.
+Why start outreach with warm contacts?	They agree to a 15-minute talk far more often than strangers.
+Is it OK to do a first pilot for free?	No. A reduced price is fine, but free work has no boundaries. Agree scope, price and case-study permission in writing.
+Why be careful emailing strangers in the EU?	Unsolicited marketing rules are strict, especially for individuals and sole traders. Prefer visits, calls and warm introductions.
+How is this different from door-to-door sales?	The client already asked for help, so we qualify each other instead of me persuading someone who didn't ask.
+Name the seven parts of a discovery call.	Greet and set the agenda; the problem; the impact; the current process and tools; constraints; success; next step.
+What do you say in part 1?	Who I am briefly and the agenda: a few questions, how I'd approach it, then next steps.
+Give two questions for the "impact" and "constraints" parts.	Impact: "What does this cost you in time or money?" Constraints: "What data and access is involved, and what is your budget range and deadline?"
+How do you handle a vague client who says "I want AI for my business"?	Narrow it down: ask for one repeated task and what it costs them in time or money.
+What do you say when you haven't done exactly what they ask?	"I haven't done exactly that, but I've built X, and here's how I'd check it works." No bluffing.
+What do clients look at first, in order?	Photo, headline, the first two lines of the overview, portfolio items, skills and rate.
+What makes a headline strong?	It is specific: who you help and with what, not a vague title.
+Give three things you must never put on your profile.	Fake reviews, invented clients, and skills I can't show.
+What rate goal does this roadmap use and why consider fixed-price offers?	At least 20 euros an hour; fixed-price offers are often easier to win for small jobs at the start.
+What is the Rising Talent badge and where do you find its current criteria?	A badge for promising new freelancers that raises visibility; read the criteria on Upwork's own Rising Talent page.
+Who edits the live Upwork profile?	Only me. Claude reviews the text as a client would.
+What is the real problem with using AI on client work?	Using it secretly or sending the wrong data, not using it at all.
+What decides whether a provider keeps or trains on your data?	The provider's terms; API terms usually differ from consumer chat terms, so read each one.
+What do you check in Upwork's settings?	The AI Preferences (or similar privacy settings), and I decide my own choices.
+A client wants you to test with their real customer list. What do you say?	I'd ask to test with fake or masked data first. Real data only with written consent, and I won't paste it into a tool that isn't approved.
+Name four practical rules for AI and client data.	Use fake or masked data; remove names, emails and IDs; never paste secrets; keep client data out of my own prompts and repo.
+What six things does ai-use-policy.md contain?	The tools I use; what data each sees; what I never send; how I mask personal data; which provider terms I checked and when; and the consent sentence.
+What are the three things to read for?	The problem (what hurts), the deliverable (what they think they need) and the signals (budget, urgency, tools, clarity).
+How can the problem differ from the deliverable?	A client may ask for a CRM integration (deliverable) when the real problem is that leads get lost.
+Name four things to check on a client before applying.	Payment verified, total spent, hire rate, reviews from freelancers (and time on Upwork).
+What does a Connect cost and how many do free accounts get?	$0.15 each; 10 free per month (Freelancer Plus gives about 100; sources disagree). Check your account for current numbers.
+Why apply only to strong matches?	Each proposal costs Connects that vary per job, so a few can use up the free month.
+Name six red flags in a job post.	Free samples or a test project; moving to WhatsApp/Telegram or paying outside Upwork; paying a fee or buying software/crypto first; wallet verification; ID or selfie requests; unknown files or links; huge promise with tiny budget; no description of what they want.
+What must you never do?	Download unknown files, pay to get work, leave the platform to be paid, or ignore something suspicious instead of reporting it.
+What score means you should apply and what does fit include?	4 or higher out of 5. Fit includes understanding the problem, a similar build, a reasonable budget, a credible client and no red flags.
+Why do the first two lines matter?	They show in the notification; clients decide from them whether to open the proposal.
+Turn "Hello, I'm an expert in automation" into a better opening for a signup-tracking job.	Start with their problem, for example "You're losing track of new signups because nobody checks the database. Here's how I'd fix it."
+List the five parts of a proposal.	Their problem, my approach, one relevant project with a link, one clarifying question, and a clear next step.
+How long should a proposal be?	About 120 words.
+Give an example of a promise you can keep and one you can't.	Keep: "each new signup is logged and emailed within 15 minutes, tested on sample data first." Can't: "this will double your sales."
+Who sends the proposals?	Only I do, after fixing every comment from the check.
+What is the routine for each proposal?	Write it in proposals.md, run the Checker, fix every comment myself, then send it myself and note the Connect cost.
+Which type suits unclear work and who carries the risk?	Hourly; the client carries the risk of it taking longer. Fixed price suits small defined work and I carry the estimate risk.
+How is a fixed-price contract protected on Upwork?	The client funds a milestone first (escrow) and I deliver once it's funded.
+What matters for protection on an hourly contract?	Tracking time with Upwork's own time tracker; hours logged elsewhere may not be covered.
+8 hours of work, 50% buffer, 20 euros an hour. What's the quote before fees?	8 × 1.5 = 12 hours; 12 × 20 = 240 euros.
+Why add a buffer?	Setup, testing and client delays take time; without it I work more hours than I'm paid for.
+How much must you charge to take home 240 euros with a 10% fee?	240 ÷ 0.9 = about 267 euros.
+Where do you see the fee and how often should you check?	Before you apply, on every job, because the rate varies.
+What does a scope of work contain?	What's included, what isn't, rounds of changes, what I need from the client and when, and that anything else is a new quote.
+When do you start work on a milestone?	Only once it's funded.
+Who do you ask about VAT on Upwork income?	An accountant or the tax authority; Claude isn't a tax adviser.
+What do you say when a client asks for a change after delivery?	Anything outside the agreed scope or the included rounds is a new quote; I use a change request.
+What does a package state?	What I deliver, what is and isn't included, delivery time, price, and what I need from the client.
+Why do small clients like packages?	They get a defined result at a known price instead of hiring open-ended help.
+Which three packages do you offer first?	A lead-capture workflow, an AI inbox sorter and a Python data report.
+What must back each package?	A project I've built or will build; if not built yet, I note which project will prove it.
+How many tiers do you offer?	At most a basic and a bigger version.
+Give two examples of assumptions and two of exclusions.	Assumptions: client has the accounts; sample data arrives within 2 days. Exclusions: hosting, ongoing maintenance, more than 2 rounds of changes.
+What are the two rules for each practice call?	Answer within 30 seconds, and speak the answers aloud (voice-to-text) instead of typing.
+What does each persona practise?	Café owner: narrowing a vague request. E-commerce manager: honesty, evidence and price. Technical founder: not bluffing under detailed questions.
+What five things does the scorecard cover?	Questions I asked, listening, honesty about what I can do, clarity, and setting a next step.
+What do you do after each call?	Write down the one thing to fix, carry it into the next call, and log mistakes in mistakes.md.
+Why do direct outreach as well as Upwork?	Upwork has few free Connects and much competition; direct contact can get a first paid job and review sooner. I need at least one case study first.
+Who do you contact first and why?	Warm contacts (family, friends, gym, the clinic), because they say yes to a short conversation much more often than strangers.
+What may you build for a physiotherapy clinic at first?	Appointment-request intake, an FAQ about hours and treatments, and review requests. No patient records.
+What are the four parts of the message?	Who I am in one line, the specific problem, one result I built, and one low-effort ask.
+Which channels do you prefer and why?	In-person visits, phone calls, LinkedIn messages and warm introductions, because EU rules on unsolicited email, especially to individuals and sole traders, are strict.
+What goes in a half-page pilot scope?	The goal, what I'll deliver, what isn't included, the price, the dates, and what I need from them.
+Why not do the pilot for free?	Free work has no boundaries; a reduced price still sets a scope and shows the work has value.
+Who is the persona in the redo call and what are the rules?	A physiotherapy clinic owner who wants fewer no-shows but is nervous about AI and patient data, with a small budget. Same 30-second timer, no notes.
+A clinic owner says "AI and patient data sounds risky." What do you say?	Agree it's a real concern, propose starting with no patient data (reminders, FAQ), explain health data is a special GDPR category needing proper advice, and say what I'd minimise and log.
+What three things does the exam test?	A proposal review, a 5-minute discovery call with a vague client, and a pricing question.
+What is the pass mark and what else must be true?	80%, and I can run a 15-minute call without freezing and my proposals are sent.
+What does the diagnose step produce?	The one root misunderstanding behind my mistakes and 8 flashcards in a tab-separated file for Anki.

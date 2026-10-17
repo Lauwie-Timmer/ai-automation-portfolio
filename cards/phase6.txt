@@ -1,0 +1,20 @@
+What are the five documents in a templates pack? || Kickoff questionnaire, scope of work, change request, handover document and update message.
+What does a change request do? || It states what is asked and what it changes in time and price, and needs a yes before you start. It handles scope creep politely.
+How often should you update a client? || Every 2 to 3 days, even if it's "no change, testing today".
+When do you ask for a review? || After the work is accepted, and never in exchange for anything.
+Why record a short video walk-through at handover? || The client can see how it works later, and it proves what was delivered.
+What does the n8n licence allow for consultants? || Building workflows for clients, when the client owns the instance or the client never accesses your n8n.
+What does the n8n licence not allow without a paid licence? || Hosting many clients' workflows or credentials on an n8n you run and selling it as a service, or embedding n8n in your own product.
+Whose accounts and API keys go in a client workflow? || The client's own, so you never carry their costs or risk.
+In GDPR terms, what are you for a client's customer data? || Usually a processor. Use as little personal data as possible and agree handling in writing.
+What does EU AI Act Article 50 ask of a chatbot? || Tell people they are talking to an AI unless it is obvious, and offer a human route. Check the current text.
+Four ways a client's n8n can be hosted? || n8n Cloud, a server the client owns, you hosting it for several clients (restricted), or the client's own existing tool.
+Why does the n8n encryption key matter? || Saved logins are encrypted with it. Lose the data volume and every saved login becomes unreadable, so back it up.
+What is Docker Compose? || One file that describes your containers, so a server can be rebuilt with docker compose up -d.
+What is Kubernetes, and do you need it? || A system that runs many containers across many servers. Small clients don't need it. Learn it only if a project requires it.
+Three monitoring checks for a client's automation? || AI provider spending limit, automatic clean-up of old execution data, and an uptime check on /healthz.
+Why a pull request instead of committing to main? || Someone reads the change, so mistakes get caught and knowledge spreads.
+What causes a merge conflict? || Two people changed the same lines and Git can't choose.
+Where do team secrets live? || In a shared password manager, never in chat or the repo.
+Niche formula? || I help [who] [get result] by [method].
+Why use evidence to choose a niche? || Replies, calls and jobs show what the market wants, so you don't guess.

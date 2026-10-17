@@ -1,0 +1,155 @@
+#separator:tab
+#html:false
+What is idempotency in a workflow?	Running it twice does not do the thing twice, for example by marking rows as notified.
+What is least privilege?	Give a tool only the access it needs. For example, don't leave a key that can read and write your whole production database in a tool.
+What does the Supabase service_role key do?	It bypasses row-level security, so it must stay in a trusted server or n8n credential, never in a repo or chat.
+Polling vs webhook for a localhost n8n?	Your n8n can call out and poll, but outside services can't call a localhost webhook.
+When may you email people who signed up?	Only if the signup told them they'd hear from you. When unsure, notify only yourself.
+SQL: what do the main verbs do?	SELECT reads, INSERT adds, UPDATE changes, DELETE removes, CREATE TABLE makes a table.
+Why must UPDATE and DELETE have a WHERE?	Without it they change or remove every row. Run a SELECT with the same WHERE first.
+Primary key vs foreign key?	A primary key identifies one row. A foreign key points to a row in another table, which is what a JOIN follows.
+What is Row Level Security?	Rules in Supabase that decide which rows each user may see.
+Why use SQL parameters?	Pasting text into a SQL string invites SQL injection.
+What is pgvector?	A Postgres extension that adds a vector column type and similarity search, used to store embeddings.
+Why must embedding size match?	The vector(N) size has to equal the embedding model's output, or search breaks.
+Six things to check in an API doc?	Authentication, base URL with an example, the endpoints you need, rate limits, pagination, and webhooks.
+Why make a booking workflow safe to run twice?	Webhooks can arrive twice, which would create duplicates.
+How does argparse help a script?	It lets you run it with options such as --days 30.
+What does pytest test in Project B?	The calculation function, not the API call.
+Why does a 30-day exchange rate request return about 20 days?	Rates exist only for working days.
+Five parts of a case study?	Problem, what I built, tools, result (honest about sample data), and what I'd do next.
+AI disclosure checklist for a chatbot?	First message says it is an AI, never pretends to be a person, says what it can do, offers a human route, links a privacy notice, and logs conversations for review.
+Why not connect a first assistant to patient records?	Health data is a special category under GDPR. Use general information only.
+Make vs Zapier vs n8n words for a workflow?	n8n: workflow. Make: scenario. Zapier: Zap.
+What do WhatsApp business bots need?	A verified business, a phone number, approved message templates, per-message fees and customer opt-in.
+Why is delay the problem for voice agents?	Speech-to-text, the model and text-to-speech chain together, so each step adds waiting.
+What does idempotent mean, and why does a workflow that runs every 15 minutes need it?	Running it twice has the same effect as once. Without it the same signup is found on every run and you are notified again and again.
+What is the marker pattern?	Keep a flag such as a `notified` column. Find rows where it is false, act on them, then set it to true so the next run skips them.
+Do you set `notified` before or after sending the email, and why?	After the email succeeds. If the email fails, the row stays unmarked and is retried. The cost is a rare duplicate if it crashes between the two steps.
+What is the difference between the publishable key and the secret key?	The publishable key respects Row Level Security and is safe in public code. The secret key bypasses RLS completely and is for trusted servers only. The old name for the secret key is service_role.
+Where may the secret key be stored and where must it never go?	Only in the n8n credential. Never in a repo, a chat, a prompt or a screenshot.
+Which two values does n8n's Supabase credential need?	The project URL (Host, without `/rest/v1`) and a secret key.
+Which columns does `practice_signups` have, and what is the default of `notified`?	`id`, `email`, `created_at` (default now) and `notified` (boolean, default false).
+Why does this workflow poll Supabase instead of waiting for a webhook?	n8n runs on localhost, so Supabase can't call it. A Schedule Trigger asking every 15 minutes works.
+When may you email the people on the waitlist?	Only if the signup form told them they would hear from you. Otherwise notify only yourself.
+Put the notifier's nodes in order.	Schedule Trigger, Supabase get rows where notified is false, check for zero rows, Google Sheets append, Gmail notify, Supabase set notified to true.
+How do you prove the notifier is idempotent?	Insert 3 fake rows, run it, run it again. Each row is notified once and the second run does nothing.
+What does the weekly digest contain and when does it run?	Monday 08:00; the count of signups from the last 7 days and the list, emailed to me.
+Supabase is down for an hour. What happens to the signups?	The node fails and the error workflow alerts me. Rows stay unmarked, so the next successful run picks them all up.
+Two runs overlap. What could go wrong and how could you reduce it?	Both may see the same unmarked row and notify twice. Mark the row first, or use a status column like pending/sent.
+The secret key leaks. What do you do?	Rotate it in Supabase, update the n8n credential, and review the project's logs.
+What is the difference between a primary key and a foreign key?	A primary key identifies one row in its own table. A foreign key stores the id of a row in another table, linking the two.
+Which type do you use for money and which for a time with time zone?	`numeric` for money, `timestamptz` for a timestamp with time zone.
+In `orders`, which column is the foreign key and what does it point to?	`customer_id`; it points to `customers.id`.
+Write a query for all orders over 50.	`select * from orders where amount > 50;`
+Write a query for the 3 biggest orders.	`select * from orders order by amount desc limit 3;`
+Write a query for the orders from the last 7 days.	`select * from orders where created_at > now() - interval '7 days';`
+Write a query for the total amount per customer.	`select customer_id, sum(amount) as total from orders group by customer_id;`
+What is the difference between `where` and `having`?	`where` filters rows before grouping; `having` filters the groups after the aggregate is calculated.
+Which aggregates do you use to count rows and to add up amounts?	`count(*)` counts rows and `sum(amount)` adds up a numeric column.
+Write a query for the 3 biggest orders with the customer's name.	`select c.name, o.amount from orders o join customers c on c.id = o.customer_id order by o.amount desc limit 3;`
+How do you find customers who have no orders?	`left join` orders and keep rows where the order side `is null`.
+What does a plain JOIN do with a customer who has no orders?	Drops them; an inner join keeps only rows that match on both sides.
+What happens if you run `update customers set city = 'X';` with no WHERE?	Every customer's city is changed to X.
+What is the safe way to do an UPDATE?	First run a `select` with the same `where` to see which rows match, then run the `update` with that `where`.
+Which three statements add, change and remove rows?	`insert`, `update` and `delete`.
+What does Row Level Security do?	It decides which rows each user can see or change; policies are attached to a table. The secret (service_role) key bypasses it.
+Why is gluing user text into a SQL string dangerous, and what do you do instead?	The text can contain SQL that changes the query (SQL injection). Use parameters so values are never run as SQL.
+Why isn't the Simple Vector Store fit for a client?	It keeps data in memory, so it is lost on every restart and is meant for development only.
+After `docker restart n8n`, which store still has its data?	The Supabase (Postgres) one. The in-memory store is empty.
+What does pgvector add?	A `vector` column type and similarity search inside Postgres.
+What are the table and the function for?	The table stores each chunk's text, metadata and embedding. The `match_documents` function returns the rows nearest to a question's embedding.
+What does `<=>` do in the function?	It is the cosine distance between two embeddings; smaller means more similar.
+What does `vector(1536)` mean and what must it match?	Each embedding has 1536 numbers; that must equal the output size of the embedding model.
+Your insert fails with a dimension error. What do you do?	Read the sizes in the error, recreate the table and function with the model's size, and keep using the same model.
+Why must you not mix two embedding models in one table?	Their numbers mean different things, so similarity between them is meaningless.
+Which node mode inserts the FAQ and which lets the agent use it as a tool?	Insert Documents for the loader; Retrieve Documents (As Tool for AI Agent) for the bot.
+What happens if you run the loader twice and how do you avoid it?	Every chunk is inserted twice. Clear the table first or only load new text.
+How would you change one FAQ answer without reloading everything?	Use the node's Update Documents mode with that row's ID.
+Name three things you can adjust to improve a RAG bot.	Chunk size and overlap, metadata filters, and an "I don't know when unsure" instruction.
+In your own words: when is each of the two stores the right choice?	Simple Vector Store for quick experiments. Supabase pgvector for anything that must survive restarts or be updated, like a client project.
+Name the six things a good small script has.	A clear purpose, settings in one place, error handling, logging, a tested core function, and a README.
+What does Project B calculate for each currency?	Minimum, maximum, average and percentage change over the last N days.
+How do you get the date 30 days ago as text for an API?	`(date.today() - timedelta(days=30)).isoformat()`
+Why does a 30-day request return about 20 values?	The API only has working days (no weekends), so you must not hard-code a count.
+Why add `timeout=10` and `raise_for_status()`?	So the script doesn't hang forever, and so an HTTP error becomes an exception you can handle.
+Write the four argparse lines that read `--days` with a default of 30.	`import argparse`, `parser = argparse.ArgumentParser()`, `parser.add_argument("--days", type=int, default=30)`, `args = parser.parse_args()`; then use `args.days`.
+What happens with `--days abc`?	argparse rejects it with an error and a usage message because it isn't an integer.
+Write the two logging lines that configure it and log an info message.	`logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")` then `logging.info("fetched %d days", n)`.
+Name the three failures Project B must handle.	The API being down, empty data, and a bad argument.
+Why exit with a non-zero code on failure?	So the person or scheduler running it can tell it failed.
+Why put the calculation in its own function?	So you can test it with small hand-made numbers without calling the API.
+What is the name rule for a pytest file and test, and how do you run them?	File named like `test_report.py`, functions starting with `test_` using `assert`; run `pytest`.
+Why open the CSV file with `newline=""`?	Without it, Windows writes an extra blank line between rows.
+Which commands set the project up from a fresh clone?	`python -m venv .venv`, activate it, `pip install -r requirements.txt`, then `python report.py --days 30`.
+What five things go in the README?	What it does, setup, usage with an example, what the output looks like, and what happens on failure.
+How do you test that the README is good?	A friend follows it without help; every question they ask is a gap.
+Which two tools does the assistant's agent have?	An FAQ retrieval tool (vector store) and a tool that saves a lead (Google Sheet plus email).
+What business information may you use for a clinic assistant?	Only public information such as opening hours and treatment types. No patient data.
+List the five things a good assistant does.	Says it's an AI, answers only from approved information, says "I don't know" when unsure, never invents prices or hours, and offers a human route.
+Which three tricks do you test?	Asking for a discount, asking for medical advice, and "ignore your instructions".
+What does Article 50 require of a chatbot, and from when?	Tell users at first contact that they are talking to an AI (unless obvious), applying from 2 August 2026. Check current text; not legal advice.
+List the six points of the disclosure checklist.	First message says it's an AI; never pretends to be human; says what it can and can't do; human route; link to privacy notice; conversations and leads logged and reviewed.
+Write a `$fromAI` expression for the visitor's email.	`{{ $fromAI('email', 'the visitor email address', 'string') }}`
+What do the arguments of `$fromAI` mean and where does it work?	They are hints for the model (name, description, type), not references to data. It works only in tools connected to an AI Agent node.
+When must the agent call the lead tool?	Only after the visitor gave a name and an email and agreed to be contacted.
+Why doesn't Project C connect to real patient data?	Health data is a special category under GDPR with strict rules; a first version uses only general public information.
+Why can't a website chat widget use your n8n, and what do you show instead?	n8n runs on localhost, which the internet can't reach. Show a screen recording; a real client needs hosted n8n.
+What goes in the Chat Trigger's initial message?	The AI disclosure, saying it is an AI assistant.
+What is the test set and what do you record?	8 questions in the FAQ, 4 outside it, and 3 tricks; record what the bot did for each and whether it's acceptable.
+Name five types of tool that appear often in automation jobs.	A CRM or database (Airtable, HubSpot, Notion), booking (Calendly, Cal.com), WordPress, payments (Stripe) and team chat (Slack).
+What mode do you use to practise with Stripe-type tools?	Free plans and test or sandbox mode, never live data.
+What are the six things you look for in an API doc?	Authentication, base URL with an example request, endpoints, rate limits, pagination, and webhooks.
+n8n has no node for a tool. What do you do?	Use the HTTP Request node with a saved credential holding the key, following the tool's API doc.
+What is the difference between an API key and OAuth2?	A key is one secret you send with each request. OAuth2 has you log in and approve specific access, and the tool issues tokens.
+Give two ways to practise outside-tool events with a localhost n8n.	A local forwarder such as Stripe's CLI `stripe listen --forward-to localhost:5678/...`, or polling the tool's API from a Schedule Trigger.
+Why must a webhook handler check who sent the request?	The URL can be found and posted to by anyone, so you check a signature or secret to be sure it came from the real tool.
+Why must a webhook workflow be safe to run twice?	The sender may deliver the same event more than once (and retries on failures), so a repeat must not create duplicates.
+Name two ways to avoid duplicates.	Store processed event ids and skip repeats, or upsert by a unique key.
+The tool's API is down. What does your workflow do?	The node fails, the error workflow alerts me, and retry-on-fail covers short outages.
+What do you write in `integration-notes.md`?	Why I chose the two tools, and the answers to the six API-doc points for each.
+What must be true of each workflow before you commit it?	It has an error workflow, is safe to run twice, and the export contains no credentials.
+Name the five parts of a case study in order.	Problem, what I built, tools, result, and what I'd do next.
+How long is a case study, and who is the reader?	About 150 words; a client who reads it in a minute.
+Turn "streamlined operations" into something specific.	Say exactly what happens, for example "notifies the owner within 15 minutes of each signup and sends a weekly count".
+You have no real client result yet. What do you write?	Describe what the tests showed and label it as a prototype on sample data. Never invent numbers.
+What is the order of work for the case studies?	Write each to 150 words, get a critique, fix every comment myself, then cut about 20%.
+What are the three parts of a 2-minute demo?	The problem in one sentence, the result running, and one thing I'd improve.
+How do you open Game Bar and start recording?	Press Win+G and use the record button, or press Win+Alt+R to start and stop.
+What do you check the recording for before sharing it?	Keys, tokens and passwords, real emails and names or customer data, and private tabs or notifications.
+What are an n8n workflow, node and item called in Make?	Scenario, module and bundle.
+What is an n8n IF/Switch called in Make and in Zapier?	A router with filters in Make; Paths (or Filter) in Zapier.
+What do the three tools call saved logins?	Credentials in n8n; connections in Make and Zapier.
+How do Make and Zapier charge?	Make per credit (formerly operations) and Zapier per task, so more steps cost more every month.
+What do you say to a client who already uses Make?	That I can build it in their tool and can also build it in n8n if that suits them better.
+Which seven rows must the vocabulary table have?	Trigger, step, data item, branch, loop, error handling and credentials.
+Which parts are hardest to move between tools?	Data mapping and expressions, error handling, and testing.
+What does Pydantic do when data doesn't match the model?	It raises a ValidationError that lists each problem (wrong type, missing field, value out of range).
+How do you restrict a field to a list of allowed values?	Use `Literal["a", "b", "c"]` as its type.
+Give one thing Pydantic does not catch.	A valid-looking but wrong answer, for example the wrong category. It checks shape, not truth.
+Which three uv commands create a project, add a package and run a script?	`uv init`, `uv add <package>`, `uv run <script>`.
+What is the difference between `ruff check` and `ruff format`?	`check` finds problems (linting). `format` reformats the code style.
+What do `uv add` and `uv run` do?	`uv add` adds a package to the project; `uv run` runs a script inside the project environment.
+Name two things ruff can find.	Unused imports and other common mistakes, which `ruff check --fix` can often fix automatically.
+What does `@app.post("/clean")` mean?	The function below answers POST requests at the path `/clean`.
+How does FastAPI reject bad input?	The request body is checked against the Pydantic model; if it doesn't fit, FastAPI returns a 422 error automatically.
+Why does `http://localhost:8000` not work from n8n in Docker?	Inside the container, localhost is the container itself, not my PC. Use `host.docker.internal`.
+What must a client deployment of your endpoint have that your practice one doesn't?	Authentication (such as an API key header) and HTTPS, because otherwise anyone who can reach the port can call it.
+What is the sequence of the four practice tasks?	Pydantic model with a broken answer, a fresh uv project, ruff on the Project B script, and a FastAPI `/clean` endpoint called from n8n.
+Why is "an AI receptionist" more than a workflow?	It needs a phone or messaging platform, extra running costs and compliance work on top of the logic.
+Why can't a WhatsApp bot just message everyone?	Customers must opt in, and messages you start must use Meta-approved templates, each charged by category and country.
+What is the 24-hour window?	After a customer messages the business, it can reply with free-form messages for 24 hours at no charge.
+How is WhatsApp Business Platform priced?	Per message, by category (marketing, utility, authentication) and country, since July 2025.
+What are the three stages of a voice agent?	Speech-to-text, a language model, and text-to-speech, over a phone line.
+What causes delay and what are costs based on?	Each stage adds delay. Costs are per minute across the number, call, speech and model.
+Who must agree before you record a call?	The people on the call; rules vary by country, so check and tell the caller.
+What five things does the receptionist answer cover?	What I've built, what a phone agent needs, what it costs, the rules, and what I would and wouldn't promise.
+Name something you must not promise.	A guaranteed response time, accuracy or full automation I haven't measured.
+Which four words must you not use without explaining them?	Item, node, API and webhook.
+What order does a good client explanation follow?	Their problem, what happens now, what they get, and what it doesn't do yet.
+What three things does the grader tell you?	What I got wrong, what I skipped, and which words a non-technical person wouldn't know.
+What are the six questions a sceptical client asks?	What happens when it breaks; how do I know it's right; what does it cost to run; who owns the code; what about customer data; why pay you instead of Zapier.
+What is a good answer when you haven't tested something?	Say so honestly and describe how you would test it. Never bluff.
+How do you answer "what does it cost to run?"	Break it down (hosting, model calls by token, tool plans), say I'd calculate it from their volume, and show the method.
+How do you answer "who owns it?"	The client owns their accounts and keys; I hand over exports, a README and a walkthrough video.
+What is the pass mark for Phase 4 and what comes after the exam?	80% plus three linkable case studies. Then diagnose the root misunderstanding, make 8 flashcards and review them for two days.

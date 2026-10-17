@@ -1,0 +1,783 @@
+<title>Automation Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: one column workbench. Summary strip, then one collapsible card per phase. Each step unfolds into a lesson with its prompts. */
+  :root {
+    --bg: #edf0f3;
+    --surface: #ffffff;
+    --surface-2: #f5f7f9;
+    --ink: #131c26;
+    --muted: #5b6877;
+    --line: #d5dbe2;
+    --accent: #2a5bd7;
+    --accent-soft: #e3ebfb;
+    --done: #1f8a5b;
+    --done-soft: #ddf2e7;
+    --code-bg: #e9edf2;
+    --err: #b3261e;
+    --warn: #8a5a00;
+    --warn-soft: #fbefd4;
+    --ps: 62%; --pl: 40%; --on-pc: #ffffff;
+    --font-body: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e141b; --surface: #151d26; --surface-2: #1a242f; --ink: #e7edf3; --muted: #93a0ae;
+      --line: #26323e; --accent: #6f9bff; --accent-soft: #1b2a47; --done: #4cc38a; --done-soft: #14301f;
+      --code-bg: #212c38; --err: #ff8a80; --warn: #f0b85a; --warn-soft: #33280f;
+      --ps: 70%; --pl: 66%; --on-pc: #0e141b;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e141b; --surface: #151d26; --surface-2: #1a242f; --ink: #e7edf3; --muted: #93a0ae;
+    --line: #26323e; --accent: #6f9bff; --accent-soft: #1b2a47; --done: #4cc38a; --done-soft: #14301f;
+    --code-bg: #212c38; --err: #ff8a80; --warn: #f0b85a; --warn-soft: #33280f;
+    --ps: 70%; --pl: 66%; --on-pc: #0e141b;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+    padding-inline: 16px; padding-block: 28px 56px;
+  }
+  .wrap { width: 100%; min-width: 0; max-width: 880px; margin-inline: auto; display: flex; flex-direction: column; gap: 24px; }
+  button { font: inherit; color: inherit; }
+  a { color: var(--accent); overflow-wrap: anywhere; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: var(--font-mono); font-size: 0.86em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  header h1 { margin: 4px 0 2px; font-size: clamp(26px, 5vw, 36px); line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; }
+  header p { margin: 0; color: var(--muted); }
+
+  .top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; }
+  @media (max-width: 720px) { .top { grid-template-columns: minmax(0, 1fr); } }
+  .panel-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; min-width: 0; }
+
+  .overall .big { display: flex; align-items: baseline; gap: 10px; margin: 6px 0 12px; flex-wrap: wrap; }
+  .overall .pct { font-size: 52px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .overall .of { color: var(--muted); }
+  .bar { height: 10px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.35s ease; }
+  .bar.is-done > i { background: var(--done); }
+  .stats { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; color: var(--muted); font-size: 13px; }
+  .stats b { color: var(--ink); font-weight: 600; }
+
+  .next h2 { margin: 4px 0 10px; font-size: 16px; font-weight: 600; }
+  .next ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .next .empty { color: var(--muted); font-size: 14px; margin: 0; }
+  .goto { width: 100%; text-align: left; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; cursor: pointer; display: grid; gap: 4px; }
+  .goto:hover { border-color: var(--accent); }
+  .goto .t { overflow-wrap: anywhere; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .chip-btn { border: 1px solid var(--line); background: var(--surface); border-radius: 99px; padding: 5px 12px; font-size: 13px; cursor: pointer; }
+  .chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .filters .hint { color: var(--muted); font-size: 13px; flex-basis: 100%; margin: 2px 0 0; }
+
+  .how { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+  .how-body { padding: 4px 18px 18px; border-top: 1px solid var(--line); display: grid; gap: 14px; }
+  .how-body ol { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .how-body dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 14px; font-size: 14px; }
+  .how-body dt { font-weight: 600; }
+  .how-body dd { margin: 0; color: var(--muted); }
+  @media (max-width: 520px) { .how-body dl { grid-template-columns: minmax(0, 1fr); } .how-body dd { margin-bottom: 6px; } }
+
+  .toggle-head { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 14px 18px; background: var(--surface); border: 0; text-align: left; cursor: pointer; }
+  .toggle-head .chev { font-family: var(--font-mono); color: var(--muted); transition: transform 0.15s; }
+  .toggle-head[aria-expanded="true"] .chev { transform: rotate(90deg); }
+
+  /* Level 1: phase. Big header with its own colour, sticks to the top while you scroll inside it. */
+  .phase { --pc: hsl(var(--hue, 215) var(--ps) var(--pl)); --pc-soft: color-mix(in srgb, var(--pc) 11%, var(--surface)); background: var(--surface); border: 1px solid var(--line); border-left: 8px solid var(--pc); border-radius: 12px; overflow: clip; scroll-margin-top: 8px; }
+  .phase.is-current { box-shadow: 0 0 0 2px var(--pc-soft), 0 0 0 3px var(--pc); }
+  .phase-head { position: sticky; top: 0; z-index: 6; padding: 16px 18px; }
+  .phase-head[aria-expanded="true"] { border-bottom: 1px solid var(--line); box-shadow: 0 6px 12px -10px rgba(0, 0, 0, 0.35); }
+  .phase-head .name { font-weight: 700; font-size: 19px; line-height: 1.25; letter-spacing: -0.01em; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+  .phase-head .name .tag { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-pc); background: var(--pc); padding: 2px 9px; border-radius: 6px; align-self: center; }
+  .phase-head .name .sub { font-weight: 400; color: var(--muted); font-size: 13px; letter-spacing: 0; }
+  .phase-head .count { font-family: var(--font-mono); font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .phase-head .bar { grid-column: 1 / -1; }
+  .phase-head .bar > i { background: var(--pc); }
+  .phase-head .bar.is-done > i { background: var(--done); }
+  .phase-body { padding: 22px 20px 28px; background: var(--surface-2); display: flex; flex-direction: column; gap: 20px; }
+  .phase-body[hidden], .panel[hidden], .how-body[hidden], .startbox[hidden] { display: none; }
+  .intro { margin: 0; padding-bottom: 4px; }
+  .startbox { margin: 0; }
+  .note { color: var(--muted); font-size: 13px; margin: 0; }
+  .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+
+  /* Level 2: step. Grey rail = to do, green rail = done, phase colour = open. The open step's title bar sticks under the phase bar. */
+  .steps { gap: 16px; }
+  .step { border: 1px solid var(--line); border-left: 6px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); scroll-margin-top: calc(var(--phh, 0px) + 10px); }
+  .step.is-done { border-left-color: var(--done); background: color-mix(in srgb, var(--done) 7%, var(--surface)); }
+  .step.is-open { border-color: var(--pc); border-width: 2px 2px 2px 8px; border-left-color: var(--pc); background: var(--surface); box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.45); margin-block: 14px; }
+  .row { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: start; border-radius: 9px; }
+  .step.is-open > .row { position: sticky; top: var(--phh, 0px); z-index: 4; background: var(--pc-soft); border-bottom: 1px solid var(--line); border-radius: 8px 8px 0 0; }
+  .step.is-open > .row .meta { display: none; }
+  .step:not(.is-open):hover { border-color: var(--muted); }
+  .chk { background: none; border: 0; padding: 16px 0 14px 12px; cursor: pointer; display: grid; place-items: start center; }
+  .box { width: 22px; height: 22px; border: 2px solid var(--line); border-radius: 6px; display: grid; place-items: center; background: var(--surface); transition: background 0.15s, border-color 0.15s; }
+  .box svg { width: 14px; height: 14px; opacity: 0; transform: scale(0.6); transition: opacity 0.15s, transform 0.15s; }
+  .chk[aria-checked="true"] .box { background: var(--done); border-color: var(--done); }
+  .chk[aria-checked="true"] .box svg { opacity: 1; transform: none; stroke: var(--surface); }
+  .open { background: none; border: 0; text-align: left; padding: 14px 16px 14px 8px; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 10px; min-width: 0; }
+  .open > * { grid-column: 1; }
+  .open .sid { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pc); font-weight: 600; }
+  .open .chev { grid-column: 2; grid-row: 1 / span 3; align-self: center; font-family: var(--font-mono); color: var(--muted); transition: transform 0.15s; }
+  .open[aria-expanded="true"] .chev { transform: rotate(90deg); color: var(--pc); }
+  .open .title { font-weight: 600; font-size: 15.5px; overflow-wrap: anywhere; }
+  .open .meta { margin-top: 4px; gap: 8px; }
+  .step.is-done .open .sid { color: var(--done); }
+  .step.is-done .open .sid::after { content: " · done"; text-transform: none; letter-spacing: 0; font-weight: 500; }
+  .step.is-done .open .title { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .pill { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); line-height: 1.6; }
+  .pill.redo, .pill.gate { border-color: var(--accent); color: var(--accent); }
+  .pill.gate { background: var(--accent-soft); }
+  .pill.bonus { border-style: dashed; }
+  .pill.fast { border-color: var(--done); color: var(--done); }
+
+  .panel { padding: 12px 22px 24px 20px; display: flex; flex-direction: column; gap: 26px; }
+  .panelmeta { display: flex; margin: 4px 0 0; }
+  .sec h4 { margin: 8px 0 14px; padding-bottom: 5px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
+  .sec.lessonsec h4 { color: var(--pc); border-bottom: 2px solid var(--pc); }
+  .endbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; padding-top: 16px; margin-top: 4px; border-top: 1px dashed var(--line); }
+  .sec p { margin: 0; }
+  .sec ul, .sec ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .sec li { overflow-wrap: anywhere; }
+  .goal-text { font-weight: 500; }
+  .done-box { background: var(--done-soft); border-left: 4px solid var(--done); border-radius: 8px; padding: 12px 16px; }
+  .done-box small { display: block; color: var(--muted); margin-top: 4px; }
+  .prompt { border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+  .prompt + .prompt { margin-top: 16px; }
+  .prompt-head { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  .prompt-head b { font-size: 13px; }
+  .copy { border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); border-radius: 6px; padding: 3px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .prompt pre { margin: 0; padding: 14px; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: 12px; line-height: 1.55; user-select: all; max-height: 280px; overflow: auto; }
+
+  /* Lessons: one collapsible topic per block, the lesson text, self-test questions and the must-know ticks */
+  /* Level 3: topic (a sub-concept). Lighter and indented along a timeline rail, numbered, so it never looks like another step. */
+  .topics { display: flex; flex-direction: column; gap: 14px; margin-left: 12px; padding-left: 22px; border-left: 2px solid var(--line); }
+  .topic { position: relative; border: 1px solid transparent; border-radius: 8px; scroll-margin-top: calc(var(--phh, 0px) + var(--sth, 0px) + 10px); }
+  .topic:not(.is-open):hover { background: var(--surface-2); }
+  .topic.is-open { border-color: var(--line); border-left: 4px solid var(--pc); background: var(--surface-2); margin-block: 10px; box-shadow: 0 6px 16px -12px rgba(0, 0, 0, 0.4); }
+  .topic:not(.is-open) { background: var(--surface); border-color: var(--line); }
+  .topic.is-all:not(.is-open) { background: color-mix(in srgb, var(--done) 7%, var(--surface)); }
+  .topic-head { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; background: none; border: 0; text-align: left; cursor: pointer; }
+  .topic.is-open > .topic-head { position: sticky; top: calc(var(--phh, 0px) + var(--sth, 0px)); z-index: 3; background: var(--surface-2); border-bottom: 1px solid var(--line); border-radius: 8px 8px 0 0; }
+  .topic-head .num { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); display: grid; place-items: center; font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--muted); margin-left: -50px; }
+  .topic.is-open .num { border-color: var(--pc); background: var(--pc); color: var(--on-pc); }
+  .topic.is-all .num { border-color: var(--done); background: var(--done); color: var(--surface); }
+  .topic-head .tt { font-weight: 500; font-size: 14.5px; overflow-wrap: anywhere; }
+  .topic.is-open .tt { font-weight: 600; }
+  .topic-head .tc { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .topic-head .tc.all { color: var(--done); }
+  .topic-head .chev { font-family: var(--font-mono); color: var(--muted); margin-left: 8px; transition: transform 0.15s; display: inline-block; }
+  .topic-head[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .topic-body { padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 24px; }
+  .lesson { max-width: 70ch; }
+  .lesson p { margin: 14px 0 0; }
+  .lesson p:first-child { margin-top: 0; }
+  .lesson ul, .lesson ol { margin: 14px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .lesson h5 { margin: 24px 0 0; font-size: 14px; font-weight: 600; }
+  .lesson pre.code { margin: 16px 0 0; padding: 14px 16px; background: var(--code-bg); border-radius: 8px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; }
+  .lesson pre.code code { background: none; padding: 0; font-size: inherit; overflow-wrap: normal; }
+  .tbl { overflow-x: auto; margin-top: 14px; }
+  .tbl table { border-collapse: collapse; font-size: 13.5px; min-width: 100%; }
+  .tbl th, .tbl td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+  .tbl th { background: var(--surface-2); font-weight: 600; }
+  .callout { margin-top: 16px; padding: 12px 16px; border-radius: 8px; background: var(--accent-soft); font-size: 14px; }
+  .callout.warning { background: var(--warn-soft); color: var(--warn); }
+  .callout::before { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-right: 8px; }
+  .callout.tip::before { content: "Tip"; }
+  .callout.warning::before { content: "Careful"; }
+  .callout.note::before { content: "Note"; }
+  .sub-h { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; padding-top: 20px; border-top: 1px dashed var(--line); }
+  .qa { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+  .qa + .qa { margin-top: 14px; }
+  .qa .q { font-weight: 500; margin: 0; }
+  .qa textarea { width: 100%; min-height: 64px; resize: vertical; font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+  .qa .answer { background: var(--done-soft); border-radius: 8px; padding: 12px 16px; font-size: 14px; }
+  .qa .answer b { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 8px; }
+  .kn { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; padding: 9px 0; }
+  .kn + .kn { border-top: 1px solid var(--line); }
+  .kn .btns { display: inline-flex; gap: 6px; }
+  .kbtn { width: 28px; height: 28px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 13px; line-height: 1; }
+  .kbtn.ok[aria-pressed="true"] { background: var(--done); border-color: var(--done); color: var(--surface); }
+  .kbtn.un[aria-pressed="true"] { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+  .kn .ktxt { overflow-wrap: anywhere; padding-top: 3px; }
+  .kn.is-ok .ktxt { color: var(--muted); }
+  .know-group { margin: 22px 0 6px; font-weight: 600; font-size: 13px; color: var(--muted); }
+  .asks { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px; }
+  .dolist { list-style: none; padding: 0; }
+  .dolist li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; }
+  .dolist .dbox { width: 22px; height: 22px; margin-top: 1px; border: 2px solid var(--line); border-radius: 6px; background: var(--surface); cursor: pointer; display: grid; place-items: center; padding: 0; }
+  .dolist .dbox[aria-checked="true"] { background: var(--done); border-color: var(--done); }
+  .dolist .dbox svg { width: 14px; height: 14px; opacity: 0; }
+  .dolist .dbox[aria-checked="true"] svg { opacity: 1; }
+  .dolist .dtxt.is-done { color: var(--muted); }
+  .kcount { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-left: 6px; text-transform: none; letter-spacing: 0; }
+
+  footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; }
+  footer .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-right: 6px; }
+  footer .dot.on { background: var(--done); }
+  .toast { color: var(--err); }
+
+  /* Phones: only the open step's title bar sticks (two sticky bars would eat the screen). */
+  @media (max-width: 720px) {
+    .phase-head { position: static; }
+    .topic.is-open > .topic-head { position: static; }
+    .phase { border-left-width: 6px; }
+    .phase-body { padding: 16px 10px 20px; }
+    .panel { padding-inline: 14px; }
+    .topics { margin-left: 8px; padding-left: 18px; }
+    .topic-head .num { margin-left: -46px; }
+    .topic-body { padding-inline: 14px; }
+  }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  @media (prefers-reduced-motion: reduce) { .bar > i, .box, .box svg, .toggle-head .chev, .open .chev { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="label" id="dayline">Day 1</div>
+    <h1>Automation Roadmap</h1>
+    <p>Upwork first, then the shared business. n8n, Python and AI agents, learned by doing. <a id="quizlink" href="#" target="_blank" rel="noopener">Open the quiz</a></p>
+  </header>
+
+  <section class="top" aria-label="Summary">
+    <div class="panel-box overall">
+      <div class="label">Core progress</div>
+      <div class="big"><span class="pct" id="pct">0%</span><span class="of mono" id="ofcount"></span></div>
+      <div class="bar" id="overallbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Overall progress"><i style="width:0%"></i></div>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="panel-box next">
+      <div class="label" id="nextlabel">Next up</div>
+      <h2 id="nexttitle">Loading</h2>
+      <ul id="nextlist"></ul>
+    </div>
+  </section>
+
+  <section class="how" id="how"></section>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <button class="chip-btn" id="f-fast" aria-pressed="false">Fast lane only</button>
+    <button class="chip-btn" id="f-phone" aria-pressed="false">Phone-friendly only</button>
+    <button class="chip-btn" id="f-bonus" aria-pressed="false">Hide bonus</button>
+    <button class="chip-btn" id="f-acc" aria-pressed="true" title="Opening something closes its siblings, so only one phase, step and topic is open at a time">One open at a time</button>
+    <button class="chip-btn" id="f-collapse">Collapse all</button>
+    <span class="hint">Fast lane is the shortest route to your first proposals. Phone-friendly is for work. Progress counts all core steps either way.</span>
+  </div>
+
+  <main id="phases" class="wrap" style="gap:28px"></main>
+
+  <footer>
+    <span><i class="dot" id="syncdot"></i><span id="syncmsg">Loading</span></span>
+    <span class="toast" id="toast" role="status"></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var DATA = __DATA__;
+  var COMMON = DATA.common, PHASES = DATA.phases, SIDE = DATA.side;
+  var START = new Date("2026-10-04T00:00:00");
+  var TARGET = new Date("2026-11-10T00:00:00");
+
+  el("quizlink").href = COMMON.quiz;
+  var DEVICE = { p: "Phone", l: "Laptop", b: "Phone or laptop" };
+  var KIND = { redo: "Redo without help", gate: "Exam", bonus: "Bonus" };
+  var CHECK = '<svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5l3 3 6-7"/></svg>';
+
+  var done = {};
+  var work = {};
+  var wcol = null;
+  var wchains = {};
+  var mode = "pending";
+  var col = null;
+  var open = {};
+  var openInit = false;
+  var prefs = { phone: false, hideBonus: false, fast: false, accordion: true };
+  var pendingScroll = null;
+  var HUES = [215, 262, 300, 340, 14, 32, 238, 284, 352]; // no greens: green means done
+  var lastFocus = null;
+  var chains = {};
+  var stepIndex = {};
+
+  PHASES.concat(SIDE).forEach(function (ph) { ph.steps.forEach(function (s) { s.phase = ph.id; stepIndex[s.id] = s; }); });
+
+  try { var p = JSON.parse(localStorage.getItem("roadmap-prefs") || "null"); if (p) { prefs.phone = !!p.phone; prefs.hideBonus = !!p.hideBonus; prefs.fast = !!p.fast; prefs.accordion = p.accordion !== false; } } catch (e) {}
+  try { var o = JSON.parse(localStorage.getItem("roadmap-open") || "null"); if (o) { open = o; openInit = true; } } catch (e) {}
+
+  function el(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function fmt(s) {
+    return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+  }
+  function core(ph) { return ph.steps.filter(function (t) { return t.kind !== "bonus"; }); }
+  function count(list) { var n = 0; list.forEach(function (t) { if (done[t.id]) n++; }); return n; }
+  function visible(t) {
+    if (prefs.phone && t.dev === "l") return false;
+    if (prefs.hideBonus && t.kind === "bonus") return false;
+    if (prefs.fast && !t.fast) return false;
+    return true;
+  }
+  function fill(str, step) {
+    return str.replace(/\{id\}/g, step.id).replace(/\{title\}/g, step.title).replace(/\{url\}/g, COMMON.url);
+  }
+  function fullPrompt(step, body) { return fill(COMMON.head, step) + "\n\n" + fill(body, step) + "\n\n" + fill(COMMON.tail, step); }
+  function kindOf(key) {
+    if (key === "how") return { t: "how" };
+    if (key.indexOf("s:") === 0) return { t: "start" };
+    if (key.indexOf("t:") === 0) return { t: "topic", sid: key.split(":")[1] };
+    if (stepIndex[key]) return { t: "step", phase: stepIndex[key].phase };
+    return { t: "phase" };
+  }
+  function setOpen(key, on) {
+    if (on && prefs.accordion) {
+      var k = kindOf(key);
+      Object.keys(open).forEach(function (o) {
+        if (o === key || !open[o]) return;
+        var ok = kindOf(o);
+        if ((k.t === "phase" && ok.t === "phase") || (k.t === "step" && ok.t === "step" && ok.phase === k.phase) || (k.t === "topic" && ok.t === "topic" && ok.sid === k.sid)) delete open[o];
+      });
+    }
+    if (on) open[key] = true; else delete open[key];
+  }
+  function topicKey(sid, tid) { return "t:" + sid + ":" + tid; }
+  function savePrefs() { try { localStorage.setItem("roadmap-prefs", JSON.stringify(prefs)); } catch (e) {} }
+  function saveOpen() { try { localStorage.setItem("roadmap-open", JSON.stringify(open)); } catch (e) {} }
+
+  function pills(t) {
+    var h = "";
+    if (KIND[t.kind]) h += '<span class="pill ' + t.kind + '">' + KIND[t.kind] + "</span>";
+    if (t.fast) h += '<span class="pill fast">Fast lane</span>';
+    h += '<span class="pill">' + DEVICE[t.dev] + "</span>";
+    if (t.time && t.time !== "ongoing") h += '<span class="pill">' + esc(t.time) + "</span>";
+    if (t.time === "ongoing") h += '<span class="pill">ongoing</span>';
+    return h;
+  }
+
+  function promptHTML(step, label, body, key) {
+    return '<div class="prompt"><div class="prompt-head"><b>' + esc(label) + '</b><button class="copy" data-copy="' + key + '">Copy prompt</button></div>' +
+      '<pre id="pr-' + key + '">' + esc(fullPrompt(step, body)) + "</pre></div>";
+  }
+
+  // ---- Lessons: per-step notes (do ticks, must-know ticks, typed answers) live in the "work" collection ----
+  function wget(id) { return work[id] || null; }
+  function wmut(id) { var d = work[id]; if (!d) d = work[id] = { do: {}, know: {}, ans: {}, rev: {} }; return d; }
+  function saveWork(id) {
+    var snap = JSON.parse(JSON.stringify(work[id]));
+    if (wcol) {
+      var prev = wchains[id] || Promise.resolve();
+      wchains[id] = prev.then(function () { return wcol.doc(id).set(snap); }).catch(function () {
+        say("Could not save your notes. Check your connection and try again.");
+      });
+    } else { try { localStorage.setItem("roadmap-work", JSON.stringify(work)); } catch (e) {} }
+  }
+  function knowState(sid, kid) { var w = wget(sid); return w && w.know ? w.know[kid] || "" : ""; }
+  function topicItems(s) { var all = []; s.lesson.topics.forEach(function (t) { t.items.forEach(function (x) { all.push(x); }); }); return all; }
+  function knownCount(s, items) { var n = 0; items.forEach(function (x) { if (knowState(s.id, x.id) === "ok") n++; }); return n; }
+
+  function knowRow(s, x) {
+    var st = knowState(s.id, x.id);
+    return '<div class="kn' + (st === "ok" ? " is-ok" : "") + '"><span class="btns">' +
+      '<button class="kbtn ok" data-know="' + s.id + "|" + x.id + '|ok" aria-pressed="' + (st === "ok") + '" aria-label="I know this" title="I know this">&#10003;</button>' +
+      '<button class="kbtn un" data-know="' + s.id + "|" + x.id + '|un" aria-pressed="' + (st === "un") + '" aria-label="Not sure" title="Not sure">?</button></span>' +
+      '<span class="ktxt">' + fmt(x.text) + "</span></div>";
+  }
+
+  function askBtn(s, t, kind) {
+    var tpl = fill(kind === "teach" ? COMMON.topicTeach : COMMON.topicQuiz, s);
+    var items = t.items.map(function (x) { return "- " + x.text.replace(/`/g, ""); }).join("\n");
+    var body = tpl.replace(/\{topic\}/g, function () { return t.title; }).replace(/\{items\}/g, function () { return items; });
+    var key = s.id + "|t|" + t.id + "|" + kind;
+    var label = kind === "teach" ? "Teach me this with Claude" : "Quiz me on this topic";
+    return '<button class="copy" data-copy="' + key + '" data-label="' + label + '">' + label + '</button><pre hidden id="pr-' + key + '">' + esc(fullPrompt(s, body)) + "</pre>";
+  }
+
+  function topicHTML(s, t) {
+    var key = "t:" + s.id + ":" + t.id, isOpen = !!open[key];
+    var kc = knownCount(s, t.items), all = kc === t.items.length;
+    var idx = s.lesson.topics.indexOf(t), nextT = s.lesson.topics[idx + 1];
+    var h = '<div class="topic' + (isOpen ? " is-open" : "") + (all ? " is-all" : "") + '"><button class="topic-head" data-toggle="' + key + '" aria-expanded="' + isOpen + '">' +
+      '<span class="num" aria-hidden="true">' + (all ? "&#10003;" : idx + 1) + '</span><span class="tt">' + esc(t.title) + '</span><span class="tc' + (all ? " all" : "") + '">' + kc + "/" + t.items.length + ' known<span class="chev" aria-hidden="true">&#9656;</span></span></button>';
+    if (isOpen) {
+      h += '<div class="topic-body"><div class="lesson">' + t.html + "</div>";
+      if (t.cmds.length) {
+        h += '<div><div class="sub-h">Commands</div><div class="tbl"><table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody>' +
+          t.cmds.map(function (c) { return "<tr><td><code>" + esc(c[0]) + "</code></td><td>" + fmt(c[1]) + "</td></tr>"; }).join("") + "</tbody></table></div></div>";
+      }
+      h += '<div><div class="sub-h">Check yourself: type your answer first, then reveal</div>';
+      t.checks.forEach(function (c) {
+        var w = wget(s.id), val = w && w.ans ? w.ans[c.id] || "" : "", shown = !!(w && w.rev && w.rev[c.id]);
+        h += '<div class="qa"><p class="q">' + fmt(c.q) + "</p>" +
+          '<textarea id="ans-' + s.id + "-" + c.id + '" data-ans="' + s.id + "|" + c.id + '" placeholder="Your answer">' + esc(val) + "</textarea>" +
+          '<div><button class="chip-btn" data-reveal="' + s.id + "|" + c.id + '" aria-pressed="' + shown + '">' + (shown ? "Hide the answer" : "Reveal the answer") + "</button></div>" +
+          (shown ? '<div class="answer"><b>Answer</b>' + fmt(c.a) + "</div>" : "") + "</div>";
+      });
+      h += "</div>";
+      h += '<div><div class="sub-h">Must know from this topic</div>' + t.items.map(function (x) { return knowRow(s, x); }).join("") + "</div>";
+      h += '<div class="asks">' + askBtn(s, t, "teach") + askBtn(s, t, "quiz") + "</div>";
+      h += '<div class="endbar"><button class="chip-btn" data-toggle="' + key + '">Close topic &#9652;</button>' +
+        (nextT ? '<button class="chip-btn" data-next="' + s.id + "|" + t.id + "|" + nextT.id + '">Next topic: ' + esc(nextT.title) + " &#9662;</button>" : "") + "</div></div>";
+    }
+    return h + "</div>";
+  }
+
+  function lessonHTML(s) {
+    var items = topicItems(s);
+    return '<div class="sec lessonsec"><h4>Full lesson <span class="kcount">' + s.lesson.topics.length + " topics, " + knownCount(s, items) + "/" + items.length + ' known</span></h4>' +
+      '<div class="topics">' + s.lesson.topics.map(function (t) { return topicHTML(s, t); }).join("") + "</div></div>";
+  }
+
+  function doHTML(s) {
+    var w = wget(s.id);
+    return '<div class="sec"><h4>Do this</h4><ol class="dolist">' + s.do.map(function (x, i) {
+      var on = !!(w && w.do && w.do[i]);
+      return '<li><button class="dbox" role="checkbox" aria-checked="' + on + '" data-do="' + s.id + "|" + i + '" aria-label="Task ' + (i + 1) + ' done">' + CHECK + '</button><span class="dtxt' + (on ? " is-done" : "") + '">' + fmt(x) + "</span></li>";
+    }).join("") + "</ol></div>";
+  }
+
+  function mustKnowHTML(s) {
+    var items = topicItems(s);
+    var h = '<div class="sec"><h4>Must know to finish this step <span class="kcount">' + knownCount(s, items) + "/" + items.length + ' known</span></h4>' +
+      '<p class="note">Everything Claude may ask you about this step is on this list, and the lesson above covers all of it. Tick &#10003; when you could do it or explain it without looking, ? when you are not sure.</p>';
+    s.lesson.topics.forEach(function (t) {
+      h += '<div class="know-group">' + esc(t.title) + "</div>" + t.items.map(function (x) { return knowRow(s, x); }).join("");
+    });
+    return h + "</div>";
+  }
+
+  function panelHTML(s) {
+    var h = '<div class="meta panelmeta">' + pills(s) + "</div>";
+    h += '<div class="sec"><h4>Goal</h4><p class="goal-text">' + fmt(s.goal) + "</p></div>";
+    if (s.learn.length) h += '<div class="sec"><h4>' + (s.lesson ? "The short version" : "Learn this first") + "</h4><ul>" + s.learn.map(function (x) { return "<li>" + fmt(x) + "</li>"; }).join("") + "</ul></div>";
+    if (s.lesson) h += lessonHTML(s);
+    if (s.res.length) h += '<div class="sec"><h4>Resources</h4><ul>' + s.res.map(function (r) { return '<li><a href="' + esc(r[1]) + '" target="_blank" rel="noopener">' + esc(r[0]) + "</a></li>"; }).join("") + "</ul></div>";
+    if (s.do.length) h += s.lesson ? doHTML(s) : '<div class="sec"><h4>Do this</h4><ol>' + s.do.map(function (x) { return "<li>" + fmt(x) + "</li>"; }).join("") + "</ol></div>";
+    if (s.lesson) h += mustKnowHTML(s);
+    h += '<div class="sec"><h4>Done when</h4><div class="done-box"><p>' + fmt(s.done) + "</p><small>Claude confirms this and checks the step off. You can tick it yourself too.</small></div></div>";
+    if (s.roles.length) h += '<div class="sec"><h4>Roles Claude plays</h4><p>' + esc(s.roles.join(", ")) + "</p></div>";
+    h += '<div class="sec"><h4>Prompts for Claude</h4>';
+    h += promptHTML(s, "I'm stuck (Explainer)", COMMON.stuck, s.id + "|s");
+    COMMON.extras.forEach(function (x, i) { h += promptHTML(s, x[0], x[1], s.id + "|x" + i); });
+    s.prompts.forEach(function (p, i) { h += promptHTML(s, p[0], p[1], s.id + "|" + i); });
+    return h + '</div><div class="endbar"><button class="chip-btn" data-toggle="' + s.id + '">Close step &#9652;</button></div>';
+  }
+
+  function stepHTML(s) {
+    var isDone = !!done[s.id], isOpen = !!open[s.id];
+    return '<li class="step' + (isDone ? " is-done" : "") + (isOpen ? " is-open" : "") + '" id="step-' + s.id + '">' +
+      '<div class="row"><button class="chk" role="checkbox" aria-checked="' + isDone + '" data-id="' + s.id + '" aria-label="Done: ' + esc(s.title) + '"><span class="box" aria-hidden="true">' + CHECK + "</span></button>" +
+      '<button class="open" data-toggle="' + s.id + '" aria-expanded="' + isOpen + '"><span class="sid">' + esc(s.id) + '</span><span class="title">' + esc(s.title) + '</span><span class="meta">' + pills(s) + '</span><span class="chev" aria-hidden="true">&#9656;</span></button></div>' +
+      (isOpen ? '<div class="panel">' + panelHTML(s) + "</div>" : "") + "</li>";
+  }
+
+  function barHTML(d, total) {
+    var pct = total ? Math.round((d / total) * 100) : 0;
+    return '<div class="bar' + (pct === 100 ? " is-done" : "") + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><i style="width:' + pct + '%"></i></div>';
+  }
+
+  function cardHTML(ph, isCurrent, idx) {
+    var c = core(ph), cd = count(c);
+    var bonus = ph.steps.filter(function (t) { return t.kind === "bonus"; });
+    var list = ph.steps.filter(visible);
+    var hidden = ph.steps.length - list.length;
+    var isOpen = !!open[ph.id], startOpen = !!open["s:" + ph.id];
+    var countTxt = cd + "/" + c.length + (bonus.length ? " + " + count(bonus) + "/" + bonus.length + " bonus" : "");
+    var fake = { id: ph.id, title: ph.name + " (phase start)" };
+    var html = '<section class="phase' + (isCurrent ? " is-current" : "") + '" style="--hue:' + HUES[idx % HUES.length] + '">' +
+      '<button class="toggle-head phase-head" data-toggle="' + ph.id + '" aria-expanded="' + isOpen + '">' +
+      '<span class="name"><span class="tag">' + esc(ph.tag) + (isCurrent ? " · current" : "") + "</span>" + esc(ph.name) + (ph.sub ? ' <span class="sub">' + esc(ph.sub) + "</span>" : "") + "</span>" +
+      '<span class="count">' + countTxt + ' <span class="chev" aria-hidden="true">&#9656;</span></span>' + barHTML(cd, c.length) + "</button>" +
+      '<div class="phase-body"' + (isOpen ? "" : " hidden") + ">";
+    html += '<p class="intro">' + fmt(ph.intro) + "</p>";
+    if (ph.start) {
+      html += '<div><button class="chip-btn" data-toggle="s:' + ph.id + '" aria-expanded="' + startOpen + '">' + (startOpen ? "Hide" : "Show") + ' the phase-start prompt</button></div>';
+      if (startOpen) html += '<div class="startbox">' + promptHTML(fake, "Start this phase (Interviewer)", ph.start, ph.id + "|start") + "</div>";
+    }
+    html += '<ul class="steps">' + list.map(stepHTML).join("") + "</ul>";
+    if (hidden) html += '<p class="note">' + hidden + " step" + (hidden > 1 ? "s" : "") + " hidden by your filters.</p>";
+    if (ph.hours) html += '<p class="note mono">About ' + ph.hours + " h for the core steps (step times plus 25% for a first pass)</p>";
+    return html + "</div></section>";
+  }
+
+  function howHTML() {
+    var isOpen = !!open.how;
+    var h = '<button class="toggle-head" data-toggle="how" aria-expanded="' + isOpen + '"><span><b>How every step works</b> <span class="sub" style="color:var(--muted);font-size:13px">the method, step by step</span></span><span class="chev" aria-hidden="true">&#9656;</span></button>';
+    h += '<div class="how-body"' + (isOpen ? "" : " hidden") + ">";
+    h += '<div><ol>' +
+      "<li><b>Learn.</b> Open a step. Read the short version, then open the topics of the full lesson one by one. For each question under <i>Check yourself</i>, type your own answer before you reveal the real one. Don't just nod along. You'll be tested on it.</li>" +
+      "<li><b>Do.</b> Build or practise it yourself, and tick each task. Struggle for about 15 minutes before asking for help. The struggle is where learning happens.</li>" +
+      "<li><b>Must know.</b> Every lesson ends in a list of exactly what you must be able to do or explain. Tick &#10003; when you could do it without looking and ? when you're unsure. Claude only asks about items on this list, and sees which ones you marked unsure.</li>" +
+      "<li><b>Stuck?</b> Copy the <i>I'm stuck</i> prompt. Claude explains only the part you're stuck on, then you redo the step on your own.</li>" +
+      "<li><b>Check.</b> Copy the step's check prompt to Claude (this chat, or a new one in <code>C:\\dev\\ai-automation-portfolio</code>). Claude asks questions, reviews your work or plays a client, so you find your own gaps.</li>" +
+      "<li><b>Done.</b> When the <i>Done when</i> box is true, Claude tells you and checks the step off here. Mistakes go to <code>mistakes.md</code>.</li>" +
+      "<li><b>Lock it in.</b> Each phase ends with <i>Redo without help</i> (rebuild it from memory), an <i>Exam</i>, a <i>diagnosis</i> of your repeated mistakes, and <i>flashcards</i>. Ready-made decks for every phase are in <code>C:\\dev\\ai-automation-portfolio\\flashcards</code> (import into the free Anki app: File, Import, field separator Tab), and the same cards are in the <a href=\"" + COMMON.quiz + "\" target=\"_blank\" rel=\"noopener\">quiz page</a>, which works well on your phone at work.</li>" +
+      "</ol></div>";
+    h += '<div><div class="label" style="margin-bottom:8px">Once a week</div>' +
+      '<div class="prompt"><div class="prompt-head"><b>Weekly check-in (Diagnostician, Mapmaker, Clerk)</b><button class="copy" data-copy="weekly">Copy prompt</button></div>' +
+      '<pre id="pr-weekly">' + esc(COMMON.weekly.replace(/\{url\}/g, COMMON.url)) + "</pre></div></div>";
+    h += '<div><div class="label" style="margin-bottom:8px">The roles Claude plays</div><dl>' +
+      "<dt>Interviewer</dt><dd>Asks you questions to find your level and your real goal before teaching.</dd>" +
+      "<dt>Mapmaker</dt><dd>Breaks a big subject into an ordered plan.</dd>" +
+      "<dt>Explainer</dt><dd>Explains only the part you're stuck on. Then you redo the whole step without help.</dd>" +
+      "<dt>Socratic questioner</dt><dd>Asks questions until you find your own gaps. Doesn't hand over answers.</dd>" +
+      "<dt>Examiner</dt><dd>Quizzes you, getting harder, and tells you your level.</dd>" +
+      "<dt>Checker</dt><dd>Reviews your work and the way you did it. Doesn't rewrite it.</dd>" +
+      "<dt>Listener</dt><dd>You explain it aloud in your own words. Claude compares it with the truth.</dd>" +
+      "<dt>Diagnostician</dt><dd>Finds the one root misunderstanding behind your repeated mistakes.</dd>" +
+      "<dt>Sparring partner</dt><dd>Plays a client in a practice call, with a timer.</dd>" +
+      "<dt>Clerk</dt><dd>Turns messy notes and mistakes into flashcards and clean outlines. The thinking stays yours.</dd>" +
+      "</dl></div></div>";
+    el("how").innerHTML = h;
+  }
+
+  function render() {
+    var totalCore = 0, totalDone = 0, hoursLeft = 0, hoursAll = 0, current = -1;
+    PHASES.forEach(function (ph, i) {
+      var c = core(ph), cd = count(c);
+      totalCore += c.length; totalDone += cd;
+      if (ph.hours) { hoursAll += ph.hours; hoursLeft += ph.hours * (1 - cd / c.length); }
+      if (current < 0 && cd < c.length) current = i;
+    });
+    if (!openInit && mode !== "pending" && current >= 0) { open[PHASES[current].id] = true; openInit = true; }
+
+    var pct = totalCore ? Math.round((totalDone / totalCore) * 100) : 0;
+    el("pct").textContent = pct + "%";
+    el("ofcount").textContent = totalDone + " of " + totalCore + " core steps";
+    var ob = el("overallbar");
+    ob.setAttribute("aria-valuenow", pct);
+    ob.className = "bar" + (pct === 100 ? " is-done" : "");
+    ob.firstElementChild.style.width = pct + "%";
+
+    var now = new Date();
+    var day = Math.max(1, Math.floor((now - START) / 86400000) + 1);
+    var left = Math.ceil((TARGET - now) / 86400000);
+    el("dayline").textContent = "Day " + day + (left > 0 ? " · " + left + " days to the Nov 10 target" : " · target date reached");
+    var fastAll = 0, fastDone = 0;
+    PHASES.forEach(function (ph) { ph.steps.forEach(function (t) { if (t.fast) { fastAll++; if (done[t.id]) fastDone++; } }); });
+    el("stats").innerHTML = '<span><b class="mono">' + fastDone + "/" + fastAll + "</b> fast lane steps (about " + DATA.fastHours + " h in total)</span>" +
+      '<span><b class="mono">' + Math.round(hoursLeft) + " h</b> left of about " + hoursAll + " h for all core steps</span>" +
+      "<span>Current: <b>" + (current >= 0 ? esc(PHASES[current].tag) : "all done") + "</b></span>";
+
+    var nl = el("nextlist");
+    if (current < 0) {
+      el("nextlabel").textContent = "All done";
+      el("nexttitle").textContent = "Every core step is checked off";
+      nl.innerHTML = "";
+    } else {
+      var ph = PHASES[current];
+      el("nextlabel").textContent = ph.tag + " · " + ph.name;
+      var pending = ph.steps.filter(function (t) { return t.kind !== "bonus" && !done[t.id] && visible(t); }).slice(0, 3);
+      if (pending.length) {
+        el("nexttitle").textContent = "Next up";
+        nl.innerHTML = pending.map(function (t) {
+          return '<li><button class="goto" data-goto="' + t.id + '"><span class="t">' + esc(t.title) + '</span><span class="meta">' + pills(t) + "</span></button></li>";
+        }).join("");
+      } else {
+        el("nexttitle").textContent = "Nothing matches your filter";
+        nl.innerHTML = '<li class="empty">Turn off the phone filter to see the laptop steps in this phase.</li>';
+      }
+    }
+
+    howHTML();
+    el("phases").innerHTML = PHASES.map(function (ph, i) { return cardHTML(ph, i === current, i); }).join("") + SIDE.map(function (ph, i) { return cardHTML(ph, false, PHASES.length + i); }).join("");
+
+    el("f-fast").setAttribute("aria-pressed", prefs.fast);
+    el("f-phone").setAttribute("aria-pressed", prefs.phone);
+    el("f-bonus").setAttribute("aria-pressed", prefs.hideBonus);
+    el("f-acc").setAttribute("aria-pressed", prefs.accordion);
+
+    el("syncdot").className = "dot" + (mode === "db" ? " on" : "");
+    el("syncmsg").textContent = mode === "db" ? "Synced across your devices. Claude can check steps off here too."
+      : mode === "local" ? "Saved on this device only."
+      : "Loading your progress";
+
+    if (lastFocus) {
+      var target = document.querySelector(lastFocus);
+      if (target) target.focus({ preventScroll: true });
+      lastFocus = null;
+    }
+    measure();
+    if (pendingScroll) { var ps = pendingScroll; pendingScroll = null; doScroll(ps); }
+  }
+
+  // Heights of the sticky bars, so scroll targets and the sticky stack line up. A bar that is not sticky (phones) counts as 0.
+  function stickyH(node) { return node && getComputedStyle(node).position === "sticky" ? node.getBoundingClientRect().height : 0; }
+  function measure() {
+    var root = document.documentElement.style;
+    var ph = document.querySelector('.phase-head[aria-expanded="true"]');
+    var phh = stickyH(ph);
+    root.setProperty("--phh", phh + "px");
+    root.setProperty("--sth", stickyH(document.querySelector(".step.is-open > .row")) + "px");
+  }
+  function elFor(key) {
+    var k = kindOf(key);
+    if (k.t === "step") return document.getElementById("step-" + key);
+    var b = document.querySelector('[data-toggle="' + key + '"]');
+    return b ? (k.t === "topic" ? b.closest(".topic") : b.closest(".phase")) : null;
+  }
+  function doScroll(ps) {
+    var k = kindOf(ps.key);
+    if (k.t === "how" || k.t === "start") return;
+    var node = elFor(ps.key);
+    if (!node) return;
+    var behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    if (ps.on) { node.scrollIntoView({ behavior: behavior, block: "start" }); return; }
+    var offset = parseFloat(getComputedStyle(node).scrollMarginTop) || 0;
+    if (node.getBoundingClientRect().top < offset) node.scrollIntoView({ behavior: behavior, block: "start" });
+  }
+  window.addEventListener("resize", measure);
+
+  function say(text) {
+    el("toast").textContent = text;
+    setTimeout(function () { if (el("toast").textContent === text) el("toast").textContent = ""; }, 5000);
+  }
+  function saveLocal() { try { localStorage.setItem("roadmap-done", JSON.stringify(done)); } catch (e) {} }
+
+  function toggleDone(id) {
+    var next = !done[id];
+    if (next) done[id] = true; else delete done[id];
+    lastFocus = '[data-id="' + id + '"]';
+    render();
+    if (mode === "db") {
+      var prev = chains[id] || Promise.resolve();
+      chains[id] = prev.then(function () {
+        return col.doc(id).set({ done: next, at: new Date().toISOString(), by: "you" });
+      }).catch(function () {
+        if (next) delete done[id]; else done[id] = true;
+        render();
+        say("Could not save that change. Check your connection and try again.");
+      });
+    } else { saveLocal(); }
+  }
+
+  function copyPrompt(key, btn) {
+    var pre = document.getElementById("pr-" + key);
+    if (!pre) return;
+    var text = pre.textContent;
+    var label = btn.getAttribute("data-label") || "Copy prompt";
+    function fallback() {
+      pre.hidden = false;
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      btn.textContent = "Selected below. Press Ctrl+C";
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = "Copied";
+        setTimeout(function () { btn.textContent = label; }, 1800);
+      }, fallback);
+    } catch (e) { fallback(); }
+  }
+
+  document.addEventListener("change", function (e) {
+    var a = e.target.closest && e.target.closest("[data-ans]");
+    if (!a) return;
+    var p = a.getAttribute("data-ans").split("|"), w = wmut(p[0]);
+    if (!w.ans) w.ans = {};
+    if ((w.ans[p[1]] || "") === a.value) return;
+    w.ans[p[1]] = a.value;
+    saveWork(p[0]);
+  });
+
+  document.addEventListener("click", function (e) {
+    var c = e.target.closest("[data-copy]");
+    if (c) { copyPrompt(c.getAttribute("data-copy"), c); return; }
+    var kb = e.target.closest("[data-know]");
+    if (kb) {
+      var kp = kb.getAttribute("data-know").split("|"), kw = wmut(kp[0]);
+      if (!kw.know) kw.know = {};
+      if (kw.know[kp[1]] === kp[2]) delete kw.know[kp[1]]; else kw.know[kp[1]] = kp[2];
+      lastFocus = '[data-know="' + kb.getAttribute("data-know") + '"]';
+      saveWork(kp[0]); render(); return;
+    }
+    var db2 = e.target.closest("[data-do]");
+    if (db2) {
+      var dp = db2.getAttribute("data-do").split("|"), dw = wmut(dp[0]);
+      if (!dw.do) dw.do = {};
+      if (dw.do[dp[1]]) delete dw.do[dp[1]]; else dw.do[dp[1]] = true;
+      lastFocus = '[data-do="' + db2.getAttribute("data-do") + '"]';
+      saveWork(dp[0]); render(); return;
+    }
+    var rv = e.target.closest("[data-reveal]");
+    if (rv) {
+      var rp = rv.getAttribute("data-reveal").split("|"), rw = wmut(rp[0]);
+      if (!rw.rev) rw.rev = {};
+      if (rw.rev[rp[1]]) delete rw.rev[rp[1]]; else rw.rev[rp[1]] = true;
+      lastFocus = '[data-reveal="' + rv.getAttribute("data-reveal") + '"]';
+      saveWork(rp[0]); render(); return;
+    }
+    var g = e.target.closest("[data-id]");
+    if (g) { toggleDone(g.getAttribute("data-id")); return; }
+    var go = e.target.closest("[data-goto]");
+    if (go) {
+      var sid = go.getAttribute("data-goto");
+      setOpen(stepIndex[sid].phase, true); setOpen(sid, true); saveOpen();
+      pendingScroll = { key: sid, on: true }; render();
+      return;
+    }
+    var nx = e.target.closest("[data-next]");
+    if (nx) {
+      var np = nx.getAttribute("data-next").split("|");
+      setOpen(topicKey(np[0], np[1]), false); setOpen(topicKey(np[0], np[2]), true); saveOpen();
+      pendingScroll = { key: topicKey(np[0], np[2]), on: true }; render();
+      return;
+    }
+    var t = e.target.closest("[data-toggle]");
+    if (t) {
+      var key = t.getAttribute("data-toggle");
+      var on = !open[key];
+      setOpen(key, on); saveOpen();
+      lastFocus = '[data-toggle="' + key + '"]';
+      pendingScroll = { key: key, on: on };
+      render();
+    }
+  });
+  el("f-fast").addEventListener("click", function () { prefs.fast = !prefs.fast; savePrefs(); render(); });
+  el("f-phone").addEventListener("click", function () { prefs.phone = !prefs.phone; savePrefs(); render(); });
+  el("f-bonus").addEventListener("click", function () { prefs.hideBonus = !prefs.hideBonus; savePrefs(); render(); });
+  el("f-acc").addEventListener("click", function () { prefs.accordion = !prefs.accordion; savePrefs(); render(); });
+  el("f-collapse").addEventListener("click", function () {
+    open = {}; saveOpen(); render();
+    el("phases").scrollIntoView({ behavior: "auto", block: "start" });
+  });
+
+  render();
+
+  (async function () {
+    var db = null;
+    try { db = window.claude ? await window.claude.use("db") : null; } catch (e) { db = null; }
+    function loadLocalWork() { try { work = JSON.parse(localStorage.getItem("roadmap-work") || "{}") || {}; } catch (e) { work = {}; } }
+    if (!db) {
+      try { done = JSON.parse(localStorage.getItem("roadmap-done") || "{}") || {}; } catch (e) { done = {}; }
+      loadLocalWork();
+      mode = "local"; render(); return;
+    }
+    wcol = db.collection("work");
+    wcol.onSnapshot(function (snap) {
+      var next = {};
+      snap.docs.forEach(function (d) { next[d.id] = JSON.parse(JSON.stringify(d.data() || {})); });
+      work = next; render();
+    }, function () { wcol = null; loadLocalWork(); render(); });
+    col = db.collection("progress");
+    col.onSnapshot(function (snap) {
+      var next = {};
+      snap.docs.forEach(function (d) { var v = d.data(); if (v && v.done) next[d.id] = true; });
+      done = next; mode = "db"; render();
+    }, function () {
+      try { done = JSON.parse(localStorage.getItem("roadmap-done") || "{}") || {}; } catch (e) { done = {}; }
+      mode = "local"; render();
+    });
+  })();
+})();
+</script>

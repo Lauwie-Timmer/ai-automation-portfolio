@@ -1,0 +1,112 @@
+#separator:tab
+#html:false
+What are the parts of an HTTP request?	Method, URL, headers, and sometimes a body.
+What are the parts of an HTTP response?	Status code, headers and a body (usually JSON).
+GET vs POST?	GET puts parameters in the URL and should only read. POST puts data in the body and changes or triggers something. HTTPS encrypts both.
+Does POST hide your data?	No. HTTPS encrypts both. POST only keeps data out of the URL, browser history and server logs.
+What do 200 and 201 mean?	Success, and created.
+What do 400, 401, 403 and 404 mean?	Bad request, not authenticated, not allowed, not found.
+What does 429 mean?	Too many requests (rate limit). Wait, then retry.
+What does a 5xx status mean?	The server broke.
+Which header says the body is JSON?	Content-Type: application/json
+How is an API key usually sent?	In a header: Authorization: Bearer <key>, or x-api-key.
+What is JSON?	Text made of objects { }, arrays [ ], strings, numbers, true or false, and null. Almost every API uses it.
+What is a webhook?	A reverse API call. The service sends an HTTP POST to your URL when something happens.
+requests.post with json= vs data=?	json= sends JSON and sets the header. data= sends a form.
+What does response.raise_for_status() do?	Raises an error on a 4xx or 5xx so failures don't pass silently.
+Why set a timeout on requests?	Without one a script can hang forever.
+What is an item in n8n?	One JSON object flowing through a workflow. A node usually runs once per item.
+What is an expression in n8n?	Code between {{ and }} that reads data, such as {{ $json.email }}.
+n8n test URL vs production URL?	The test URL (/webhook-test/...) works only while listening for a test event. The production URL (/webhook/...) works only when the workflow is active or published.
+Why can't a service on the internet call localhost?	localhost is only your own computer. You need a public URL.
+Git: working folder, staging, history?	You edit files in the working folder, git add stages them, git commit saves them to the history.
+What are a branch and a merge?	A branch is a separate line of work. A merge brings it back into main.
+You committed a secret. What now?	Delete or replace the key. Deleting the file later does not remove it from history.
+How do you read a Python error?	From the bottom. The last line says what went wrong, the line above says where.
+Two debugging habits for nested JSON?	type(x) and print(json.dumps(x, indent=2)).
+Name the four parts of a request and the three parts of a response.	Request: method, URL, headers, body (sometimes). Response: status code, headers, body.
+In `https://api.example.com/orders?status=open`, what is the path and what is the query string?	Path: `/orders`. Query string: `?status=open`.
+What is the difference between GET and POST? Does POST hide the data?	GET puts parameters in the URL and should only read; POST puts data in the body and changes something. POST doesn't hide data by itself: HTTPS encrypts both.
+Why should an API key not go in the URL?	URLs are saved in history and server logs, so the key would leak. Put it in a header.
+What is the difference between 401 and 403?	401: not authenticated (missing or wrong credentials). 403: authenticated but not allowed to do this.
+A call returns 429. What happened and what do you do?	A rate limit: too many requests. Wait, then retry more slowly.
+Who is at fault for a 4xx? For a 5xx?	4xx: the request (me). 5xx: the server.
+Which header says the body is JSON, and which carries a key?	`Content-Type: application/json` says the body is JSON. `Authorization: Bearer <key>` (or `x-api-key`) carries the key.
+You send a wrong API key. Which status code do you expect?	401.
+In the example, which path reaches `"ink"`?	`orders` → first item → `items` → second item. In Python: `data["orders"][0]["items"][1]`.
+Name three common JSON mistakes.	Single quotes instead of double, a trailing comma, and a missing comma between items.
+What is a webhook, and how does it differ from a normal API call?	A webhook is a URL I give to a service so it sends me a POST when something happens. In a normal API call I ask the service; in a webhook it contacts me.
+Why do you type `curl.exe` and not `curl` in PowerShell?	In PowerShell `curl` is an alias for a different command, Invoke-WebRequest. `curl.exe` is the real curl.
+What does `-i` add to curl's output?	The response headers (and the status line) before the body.
+Name the eight Python skills this roadmap relies on.	Variables and types, functions, loops/conditions/comprehensions, f-strings, files, the json module, try/except, imports and pip.
+What is the difference between `person["x"]` and `person.get("x")` when `x` is missing?	`person["x"]` raises a KeyError; `person.get("x")` returns None.
+What is `tags[0]` and what does `type(age)` print?	The first item, `"a"`; and `<class 'int'>`.
+What is the difference between `print` and `return`?	`print` shows text on screen. `return` gives a value back to the code that called the function.
+What does a function return if it has no `return`?	`None`.
+What does `range(1, 21)` produce?	The numbers 1 to 20 (the end, 21, is excluded).
+Write a comprehension for the squares of the even numbers from 1 to 20.	`[n * n for n in range(1, 21) if n % 2 == 0]`
+How do you print `3.14159` with two decimals in an f-string?	`f"{3.14159:.2f}"` gives `3.14`.
+How do you left-align a name in 10 characters?	`f"{name:<10}"`
+What is the difference between `json.load` and `json.loads`?	`load` reads from a file; `loads` reads from a string (the `s` is for string).
+Why use `with open(...)`?	It closes the file automatically, even if an error happens.
+What does opening a file with "w" do to an existing file?	It overwrites it.
+Which part of a Python traceback do you read first?	The last line: it names the error and the line above says where.
+Why catch a specific exception instead of a bare `except:`?	A bare except hides real bugs. Specific ones only handle the problem I expect.
+Why must you not name your own script `requests.py`?	`import requests` would load my file instead of the package, and break.
+Which exercise uses `json.load`, and which uses `json.dump`?	Exercise 2 reads with `json.load`; exercise 3 writes with `json.dump`.
+What would `word_count("a b a")` return?	`{"a": 2, "b": 1}`
+Why always pass `timeout=`?	Without one the script can wait forever if the server never answers.
+What does `params={...}` do?	It builds and encodes the query string (`?key=value&...`) for me.
+Does a successful `response.json()` prove the request worked?	No. A 500 error can also return JSON. Check the status or call `raise_for_status()`.
+What does `raise_for_status()` do?	Raises an HTTPError for 4xx/5xx so a failed call can't pass silently.
+You get `KeyError: 'temperature'`. What do you do first?	Print the whole JSON with `json.dumps(data, indent=2)` and check the exact key names and nesting.
+Write the line that reads the temperature from `{"current": {"temperature_2m": 14.2}}` held in `data`.	`data["current"]["temperature_2m"]`
+Which check makes a bad URL or a 404 stop the script with an error?	`response.raise_for_status()` (and for a wrong host name, the ConnectionError that requests raises).
+How do you know the venv is active when you run the script?	The prompt starts with `(.venv)`.
+What three things does `json=` do?	It converts the dict to JSON, sets the `Content-Type: application/json` header, and puts it in the body.
+What changes if you use `data=` instead of `json=`?	It sends form-encoded data (`key=value&...`), not JSON, and doesn't set the JSON content type.
+Why must you only send fake data to webhook.site?	The URL is public, so anyone with it can read the requests.
+Where on webhook.site do you check that your custom header arrived?	In the request's headers list: `X-Source: python`.
+Which line of Python produced the method, which the custom header, which the body?	`requests.post(...)` the method, `headers={...}` the custom header, `json=payload` the body.
+What is a trigger, and what is the Manual Trigger?	A trigger is the first node: it decides what starts the workflow. The Manual Trigger starts it when I click Execute workflow.
+In a node's panel, where do you see what arrived and what it produced?	Input on the left, Output on the right.
+Why use Execute step while building?	It runs one node and keeps its output, so the next node can be built on real data.
+Which HTTP Request node setting replaces `params={...}`, and which replaces `json={...}`?	Send Query Parameters replaces `params`; Send Body with content type JSON replaces `json`.
+How do you see the status code in the node output?	Turn on "Include Response Headers and Status"; by default only the body is returned.
+What does `{{ $json.current.temperature_2m }}` mean?	Take the data of the current item and read `current`, then `temperature_2m` inside it.
+How do you make an Edit Fields node output only the fields you set?	Turn on Keep Only Set Fields.
+Two ways to enter an expression in a field?	Switch the field to Expression mode and type it, or drag the field from the Input panel.
+What is the order of the four nodes in your workflow?	Manual Trigger, HTTP Request (GET weather), Edit Fields, HTTP Request (POST to webhook.site).
+A field in the second HTTP node shows as undefined. Where do you look first?	In the previous node's Output (JSON view) for the exact field names, and check the expression matches them.
+Why are there two webhook URLs, and when does each one work?	Test URL: works while I'm listening for a test event, shows data in the editor. Production URL: works once the workflow is published, runs without the editor and appears in Executions.
+The production URL returns 404. What do you check?	That the workflow is published (Active in older versions).
+How does a Python script on your PC reach n8n inside Docker?	Through the port mapping -p 5678:5678: localhost:5678 on my PC leads to port 5678 in the container.
+Why can't Stripe call your `localhost:5678` webhook?	`localhost` means the caller's own computer, so it only works from my own PC. The internet needs a public URL.
+Your script posts `{"message": "hi"}`. What expression reads it in the node after the webhook?	`{{ $json.body.message }}`
+Where are the request headers in the webhook output?	Under the `headers` key, next to `body`, `params` and `query`.
+Where do you look to see a run that came through the production URL?	The workflow's Executions tab.
+After publishing, which part of the script's URL do you change?	`/webhook-test/` becomes `/webhook/`: use the Production URL.
+What is the difference between `git add` and `git commit`?	`git add` puts changes into the staging area. `git commit` saves what is staged as a version in the history.
+Why is there a staging area at all?	So I can choose exactly which changes go into the next commit.
+What does `git status` show, and when do you run it?	Which files are changed, staged or untracked. Before and after every step, so I know where I am.
+What belongs in a good commit message?	A short line saying what changed and why, e.g. "Add Phase 1 scripts and workflows".
+What does `git push` do, and what does `git pull` do?	`git push` uploads my commits to GitHub. `git pull` downloads commits I don't have yet.
+Why do commits not show on GitHub right after `git commit`?	A commit is local. It only reaches GitHub after `git push`.
+Which two commands set your identity, and how often do you run them?	`git config --global user.name "..."` and `git config --global user.email "..."`, once per computer.
+What does `--global` mean in those commands?	The setting applies to every repo on this PC.
+What is a branch for?	A separate line of work, so I can experiment without risking the working code on main.
+Before `git merge experiment`, which branch must you be on?	`main`: a merge brings the other branch into the one I'm on.
+What is a merge conflict?	Both branches changed the same lines, so Git can't choose. I pick the right version by hand, then commit.
+You committed a file with your API key. What do you do first?	Delete that key in the provider's console and create a new one. Removing the file later doesn't remove it from history.
+How do you undo the last commit if you haven't pushed it, keeping your work?	`git reset --soft HEAD~1`
+Which commands, in order, save your changes and put them on GitHub?	`git status`, `git add .`, `git commit -m "message"`, `git push`.
+How do you export an n8n workflow to a file?	Open it, use the ... menu and Download, and save the file in the repo's `workflows` folder.
+What stops a pagination loop, and what danger does it avoid?	An empty page (or no next pointer) ends it with `break`. Without a stop the loop runs forever.
+Which failures are worth retrying and which are not?	Worth retrying: 429, 5xx and network errors. Not worth it: 404 or 401, which fail every time.
+What does "back off" mean?	Waiting longer after each failed attempt (1, 2, 4 seconds).
+How do you prove the retry helper works?	Force a failure with a wrong URL and watch it retry three times and then raise.
+Why rebuild from a blank page instead of reading your old script?	Rebuilding from memory is what makes it stick; reading a finished solution teaches little.
+Which expression reads `city` after the Webhook node?	`{{ $json.body.city }}`
+Which four things must your spoken explanation cover?	The request, the webhook URL (test vs production), items, and status codes.
+What is the timed build?	Send JSON from Python to an n8n webhook and keep one field, in 20 minutes, with no notes.
+Explain a webhook to a non-technical person in one or two sentences.	Instead of me asking a service again and again, I give it my address and it sends me a message the moment something happens.

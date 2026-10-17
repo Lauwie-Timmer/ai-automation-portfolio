@@ -1,0 +1,110 @@
+#separator:tab
+#html:false
+n8n: what is a trigger?	The node that starts a workflow (Webhook, Schedule, Manual, or an app event).
+n8n: what is a node?	One step that does one job, such as calling an API, changing data, branching or sending an email.
+7 items go into a node. How many times does it run?	Usually 7, once per item.
+n8n: what are credentials?	Saved logins and keys, stored once and encrypted. You pick them from a dropdown. They are not in the workflow file.
+n8n: what is an execution?	One run of a workflow. The Executions list shows past runs and their data, which is how you debug.
+Active vs published?	Newer n8n calls active workflows published. Only an active workflow reacts to its production trigger.
+What is pinned data?	A node's output saved so you don't call the API again while building.
+Why validate input first in a webhook workflow?	Real data is messy, and checking before doing anything expensive or visible prevents junk and mistakes.
+Which status code for bad input, and which for success?	400 for bad input, 200 for success.
+Webhook data arrives under which field?	$json.body (headers and query are next to it).
+Why OAuth instead of a password?	n8n can act in your account without knowing your password, and you can revoke access.
+What is the redirect URL in a Google OAuth setup?	The address Google sends you back to. It must match the one n8n shows on the credential screen.
+Why might Google login stop working after about a week?	Apps in Testing mode have their logins expire after about 7 days, so you reconnect.
+What does a Schedule Trigger need to fire?	The workflow must be active (published), and n8n must be running.
+Why Split Out?	APIs return parallel arrays, and n8n works on items. Split Out turns each array element into its own item.
+Why Aggregate before one summary email?	Without it, 7 items send 7 emails. Aggregate merges them into one.
+What shape must a Code node return?	A list of objects like [ { json: { ... } } ].
+When use a Code node?	When no standard node fits, or when the logic would otherwise take five nodes.
+What runs an error workflow?	An Error Trigger workflow selected in the failing workflow's settings.
+Why not retry a Gmail send?	A retry can send duplicate emails. Retry only actions that are safe to repeat.
+What does a workflow export contain and not contain?	Node settings and credential names, but not credential secrets. Still check for hard-coded keys.
+Three webhook authentication types in n8n?	Basic Auth, Header Auth and JWT.
+Why isn't a long random webhook URL security?	Anyone who sees the address (screenshot, log, repo) can use it.
+Does webhook authentication encrypt traffic?	No. HTTPS does that. Authentication only checks who is calling.
+How do you export workflows with the CLI?	docker exec n8n n8n export:workflow --all --separate --pretty --output=/tmp/wf, then docker cp to copy the files out.
+Should credentials go in Git?	Never.
+Is n8n's built-in Git feature free?	No. Source control and environments are in paid plans, so use the CLI on Community edition.
+What is a trigger? Name three kinds.	The node that starts a workflow. Webhook, Schedule and Manual (also app events).
+A client says "every Monday send me a report". Which trigger do you use?	A Schedule trigger.
+A webhook delivers 10 items and the next node sends an email. How many emails go out and why?	10, because the node runs once per item.
+Where do you check how many items a node received?	In its Input and Output panel (the item count is shown, and the Table/JSON view lists them).
+When do you need `$('Webhook')` instead of `$json`?	When the data I need came from an earlier node, not from the node right before this one.
+When should you switch from an expression to a data node?	When the logic is complex, such as restructuring arrays or aggregating, instead of just reading or lightly calculating a value.
+Why can you share an exported workflow without leaking your passwords?	Credentials are stored separately and encrypted. The export only contains their names.
+A workflow works when you click Execute workflow but nothing happens from the production webhook. What is the likely cause?	The workflow isn't published (active). Only published workflows react to their production trigger.
+You edited a published workflow and clicked Save, but production still behaves the old way. Why?	Save only stores a draft. Production runs the last published version until I click Publish again.
+What does pinning data do and when does it not apply?	It reuses a node's output instead of calling the API again while testing. It is ignored in production runs.
+How do you reproduce a failed production run in the editor?	In the Executions tab choose the run and click Debug in editor.
+Define "execution" and "pinned data" in one line each.	Execution: one run of a workflow. Pinned data: a node's output saved so testing reuses it instead of calling the API again.
+Why does validation go before the expensive or visible steps?	Bad data should be stopped at the door, before it writes to a sheet, sends an email or costs money.
+Which status code means bad input, and who is at fault?	400, the caller sent something wrong.
+What are the parts of an IF condition?	A value, a data type, and an operator that matches the type.
+What is the difference between AND and OR in the IF node?	AND needs every condition true; OR needs at least one.
+Which expression lowercases the email in a webhook payload?	`{{ $json.body.email.toLowerCase() }}`
+Why validate before calling `.toLowerCase()` on a field?	If the field is missing the call fails, because there is nothing to call it on.
+Which setting on the Webhook node makes it wait for a Respond to Webhook node?	Respond: Using 'Respond to Webhook' node.
+Where do you set the HTTP status code of the answer?	In the Respond to Webhook node's options, as Response Code.
+Which status code and body do you expect for the missing-email case?	`400` with `{"ok": false, "error": "invalid input"}`.
+What do you print in the Python test to see what came back?	`r.status_code` and `r.text`.
+Why isn't a long random URL enough protection?	It only makes the address hard to guess. Once it leaks (screenshot, log, repo) anyone can call it.
+Which authentication type is the usual choice for your own scripts, and how does it work?	Header Auth: the caller sends a named header with a secret value.
+What happens to the workflow when a call has a wrong secret?	The call is rejected before the workflow runs.
+Where may the webhook secret live, and where must it never appear?	In n8n credentials and `.env`. Never in the workflow, the repo or a screenshot.
+Why do you add `WEBHOOK_SECRET=` with no value to `.env.example`?	So others know the variable exists without seeing the real secret.
+What status does a request from a non-allowed IP get?	403.
+What does authentication not protect against?	Reading the traffic: it isn't encryption. HTTPS is needed for that.
+Why OAuth instead of giving n8n your Google password?	n8n gets a limited, revocable permission (a token) and never learns my password.
+Why do you have to create the Google app yourself with a self-hosted n8n?	n8n Cloud ships its own app; a self-hosted n8n doesn't, so I register my own and get a Client ID and Secret.
+What is the redirect URL for, and what error appears if it doesn't match?	It is where Google sends me back after I approve. If it doesn't match n8n's exactly I get a redirect_uri_mismatch error.
+Why does your Google connection stop working after about a week?	The app is in Testing mode, where consent and tokens expire after seven days. I reconnect the credential.
+Why must your own Gmail be added as a Test user?	In Testing mode only listed test users may sign in.
+Which row of the sheet holds the headers, and why do their names matter?	Row 1. n8n maps fields to columns by header name.
+Why use your own email as the recipient while testing?	A mistake would otherwise email real people, which can't be undone.
+Your 08:00 workflow didn't run while your laptop was shut. Why?	The Schedule Trigger only fires while n8n (Docker) is running, and only when the workflow is published.
+Which timezone does a schedule use?	The workflow's own timezone setting if set, otherwise the instance timezone (GENERIC_TIMEZONE).
+What problem does Split Out solve?	One item holding lists becomes one item per list element, so each day can be processed on its own.
+How many items do you expect from 7 days of forecast, and in what form?	7 items, each with one value from each list.
+What happens if 7 items go straight into the Gmail node without Aggregate?	Gmail runs once per item, so 7 separate emails go out.
+What does Filter do with items that fail the condition?	It discards them: only matching items continue.
+Put these nodes in order: Gmail, Filter, Split Out, Aggregate, HTTP Request.	HTTP Request, Split Out, Filter, Aggregate, Gmail.
+What shape must a Code node return in "Run once for all items" mode?	A list of objects, each with a `json` key: `[{ json: {...} }]`.
+How do you read all incoming items in a Code node?	`$input.all()`; each item's data is `item.json`.
+Where does `console.log` output appear?	In the browser's developer console.
+What happens to an item that matches no Switch rule by default?	It is discarded (Fallback Output: None).
+If a rule says "greater than 50" and another "less than 50", where does an amount of exactly 50 go?	Nowhere: it matches neither, so without a fallback it disappears. Use "greater than or equal" for one rule.
+After a Switch splits items over three branches, which Merge mode brings them back into one list?	Append.
+What does Combine by Matching Fields do?	Joins items from two inputs where the chosen field values match.
+How many items should leave the Merge node, and how do you check?	6, one per order. Check the Output item count.
+Why do workflows need error handling?	They fail for ordinary reasons and I must find out before the client does.
+Where do you choose which error workflow a workflow uses?	In the failing workflow's Options, Settings, in the Error workflow dropdown.
+Name three pieces of information worth putting in an error alert.	Workflow name, failed node, error message (plus a link to the execution).
+What can go wrong with the error workflow itself?	If it fails too, nobody gets alerted. Keep it simple and test it.
+Why retry the weather HTTP node but not the Gmail node?	Reading weather is safe to repeat. A retried email could send a duplicate if the first one actually went out.
+What does On Error: Continue do?	The workflow carries on with the other items instead of stopping.
+What triggers the error workflow?	Another workflow, which has it selected as its Error workflow, failing in an automatic (production) run.
+You broke the HTTP node and clicked Execute workflow, but no alert email came. Why?	The Error Trigger only runs for automatic executions, not manual ones. I have to publish the workflow and let its schedule run it.
+Where in the JSON file do you find which node connects to which?	In `connections`.
+How do you import a workflow file into n8n?	Drag the file onto the canvas, or use the ... menu and import it.
+Does an exported workflow contain your Google password or token?	No, only the credential name. But hard-coded keys in expressions or Code nodes would be in the file.
+What do you search for in an export before committing it?	`@` and `key`, plus webhook paths and any real personal data.
+Which three commands save your exports to GitHub?	`git add .`, `git commit -m "message"`, `git push`.
+Why use the CLI instead of n8n's built-in Git feature?	The built-in feature is only in paid plans; the CLI inside the image is free.
+What do `--separate` and `--pretty` do?	`--separate` writes one file per workflow; `--pretty` makes the files readable so Git diffs are clear.
+Why do you need `docker cp` after the export?	The files are inside the container; `docker cp` copies them to my repo folder.
+Why is `export:credentials` dangerous?	It writes secrets, readable with --decrypted, and they must never be in Git.
+Why is it useful to use `--pretty` for Git?	Readable files make `git diff` show clear, small changes.
+What does `git tag v1.0` do and when do you use it?	Labels the current commit as a version. I use it when I deliver a version to a client.
+You imported a workflow file but nothing triggers. What do you check?	Whether the workflow is active (published) again: import can leave it inactive.
+What happens when you import a workflow whose id already exists?	It updates that workflow.
+Why `Google (dev)` and `Google (prod)`?	So a test can never touch real data by accident.
+Which three commands go in your workflows README?	The `docker exec ... export:workflow` export, the `docker cp` copy out, and the `docker exec ... import:workflow` import.
+What is the benefit of a sub-workflow?	Shared logic lives in one place, so fixing it once fixes every workflow that uses it.
+Why process items in batches?	To stay within an API's rate limit by sending a few at a time with a pause.
+Which three things must your explanation cover?	Why validation comes first, what an item is, and how the sender knows it worked (status code and body).
+Which setting makes the Webhook wait for your answer?	Respond: Using 'Respond to Webhook' node.
+A workflow stopped working. Which steps do you take to find the cause?	Open the failed execution, find the last node that worked, check its Output (items and shape), then the failing node's Input and the expression or setting using it.
+What is the pass mark and what else do you need?	At least 80% and the debugging scenario fixed, plus two workflows with error handling to demo.
+What do the diagnostician and the clerk do after the exam?	The diagnostician finds the root misunderstanding behind my mistakes; the clerk makes flashcards for spaced review.

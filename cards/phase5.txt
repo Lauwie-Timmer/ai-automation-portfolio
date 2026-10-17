@@ -1,0 +1,22 @@
+What is the goal of a discovery call? || For you to understand the client's problem, and for them to see you listen. It is not a pitch.
+The seven parts of a discovery call? || Agenda, the problem, the impact, current process and tools, constraints, what success looks like, and the next step.
+Why not quote a price on the first call? || The scope isn't clear yet. Say you'll send a written fixed price with what's included.
+What do you do when you don't know an answer on a call? || Say so, say what you have built that is close, and say how you'd check. Never bluff.
+How do you get a client to say more? || Ask "can you tell me more?" or repeat their last few words as a question, and accept silence.
+What does one Connect cost, and how many are free? || $0.15 each. Basic accounts get 10 free a month.
+What does the Rising Talent badge give? || More visibility and a one-time 30 free Connects.
+Name four scam or red flag signs on Upwork. || Pay a fee first, move to WhatsApp or Telegram, ID photos or selfies, unknown file downloads, test projects, crypto.
+How do you score a job before applying? || 1 to 5 on fit, and apply only to 4 or higher.
+Proposal structure? || Their problem in your words, your approach, one relevant project, one clarifying question, and a next step. About 120 words.
+How do you estimate a fixed price? || List tasks, estimate hours, add about 50% buffer, multiply by your rate, and add the platform fee.
+What goes in a scope? || What's included, what isn't, rounds of changes, what you need from the client and when. Anything outside is a new quote.
+Why use milestones? || They protect both sides, and you don't start work on a milestone that isn't funded.
+Hourly vs fixed protection on Upwork? || Fixed price uses funded milestones (escrow). Hourly protection generally depends on tracking time with Upwork's own tracker. Check the Help Center.
+Roughly what is Upwork's fee now? || Variable, around 10% for most freelancers, and shown before you apply.
+What does a package contain? || Name, who it is for, what's included, what isn't, delivery time, price, and what you need from the client.
+What goes in your AI-use policy? || Tools you use, what data each sees, what you never send, how you mask personal data, and a consent sentence for clients.
+Why can't client work run on your free Gemini key? || Google's terms require paid services for anything made available to users in the EEA, Switzerland or the UK.
+What did Upwork's terms change on 5 Jan 2026? || It may use platform content to train its AI unless you change your AI Preferences. Read the current terms yourself.
+Why start outreach with warm contacts? || They agree to a 15-minute talk far more often than strangers.
+Is it OK to do a first pilot for free? || No. A reduced price is fine, but free work has no boundaries. Agree scope, price and case-study permission in writing.
+Why be careful emailing strangers in the EU? || Unsolicited marketing rules are strict, especially for individuals and sole traders. Prefer visits, calls and warm introductions.

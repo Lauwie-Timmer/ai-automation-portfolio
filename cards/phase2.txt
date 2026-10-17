@@ -1,0 +1,27 @@
+n8n: what is a trigger? || The node that starts a workflow (Webhook, Schedule, Manual, or an app event).
+n8n: what is a node? || One step that does one job, such as calling an API, changing data, branching or sending an email.
+7 items go into a node. How many times does it run? || Usually 7, once per item.
+n8n: what are credentials? || Saved logins and keys, stored once and encrypted. You pick them from a dropdown. They are not in the workflow file.
+n8n: what is an execution? || One run of a workflow. The Executions list shows past runs and their data, which is how you debug.
+Active vs published? || Newer n8n calls active workflows published. Only an active workflow reacts to its production trigger.
+What is pinned data? || A node's output saved so you don't call the API again while building.
+Why validate input first in a webhook workflow? || Real data is messy, and checking before doing anything expensive or visible prevents junk and mistakes.
+Which status code for bad input, and which for success? || 400 for bad input, 200 for success.
+Webhook data arrives under which field? || $json.body (headers and query are next to it).
+Why OAuth instead of a password? || n8n can act in your account without knowing your password, and you can revoke access.
+What is the redirect URL in a Google OAuth setup? || The address Google sends you back to. It must match the one n8n shows on the credential screen.
+Why might Google login stop working after about a week? || Apps in Testing mode have their logins expire after about 7 days, so you reconnect.
+What does a Schedule Trigger need to fire? || The workflow must be active (published), and n8n must be running.
+Why Split Out? || APIs return parallel arrays, and n8n works on items. Split Out turns each array element into its own item.
+Why Aggregate before one summary email? || Without it, 7 items send 7 emails. Aggregate merges them into one.
+What shape must a Code node return? || A list of objects like [ { json: { ... } } ].
+When use a Code node? || When no standard node fits, or when the logic would otherwise take five nodes.
+What runs an error workflow? || An Error Trigger workflow selected in the failing workflow's settings.
+Why not retry a Gmail send? || A retry can send duplicate emails. Retry only actions that are safe to repeat.
+What does a workflow export contain and not contain? || Node settings and credential names, but not credential secrets. Still check for hard-coded keys.
+Three webhook authentication types in n8n? || Basic Auth, Header Auth and JWT.
+Why isn't a long random webhook URL security? || Anyone who sees the address (screenshot, log, repo) can use it.
+Does webhook authentication encrypt traffic? || No. HTTPS does that. Authentication only checks who is calling.
+How do you export workflows with the CLI? || docker exec n8n n8n export:workflow --all --separate --pretty --output=/tmp/wf, then docker cp to copy the files out.
+Should credentials go in Git? || Never.
+Is n8n's built-in Git feature free? || No. Source control and environments are in paid plans, so use the CLI on Community edition.

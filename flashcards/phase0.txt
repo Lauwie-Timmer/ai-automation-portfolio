@@ -1,0 +1,120 @@
+#separator:tab
+#html:false
+What is Git?	The program on your computer that records versions (commits) of your files.
+What is GitHub?	A website that stores a copy of your Git history online (a remote). It is your backup and how you share work.
+What is a repository?	One project folder plus its full history.
+What does cloning do?	Downloads a repo from GitHub with its history, and links your copy to the remote.
+What is .gitignore for?	It lists files Git must never track or upload, such as .env and the .venv folder.
+What does git status show?	Which files changed, which are tracked, and which are ignored.
+Docker: image vs container?	An image is a frozen recipe (a program plus everything it needs). A container is a running copy made from it.
+You see "failed to connect to the docker API". What is wrong?	Docker Desktop (the engine) isn't running. The docker command is only the remote control.
+What does -p 5679:5678 mean?	Port 5679 on your PC is connected to port 5678 inside the container (left is your PC, right is the container).
+What does localhost mean?	Your own computer.
+What does a Docker volume protect?	Data such as your n8n account, workflows and saved logins, which would vanish when the container is removed.
+What do the flags --rm and -d do?	--rm deletes the container when it stops. -d runs it in the background.
+What does docker ps show?	The running containers. Add -a to include stopped ones.
+Why use a Python virtual environment?	It's a private folder of packages for one project, so projects don't break each other.
+What does activating a venv do?	The terminal uses that folder's Python. The prompt starts with (.venv).
+What is requirements.txt?	A list of a project's packages, so the environment can be rebuilt. Made with pip freeze > requirements.txt.
+What is an API key?	A secret that lets code use a service. Anyone who has it can use your account.
+Where do secrets go, and what must never happen?	In a .env file that Git ignores. Never commit them or paste them into a chat.
+What is .env.example?	A copy of .env with the names but no values. You commit it so others know what is needed.
+How may you use the free Gemini key?	Only for your own practice with fake data. Anything a client or their customers use must run on a paid account.
+What does Ctrl+C do in a terminal?	Stops the running program.
+Absolute vs relative path?	An absolute path starts at the drive (C:\dev). A relative path starts from where you are.
+In one sentence each: what are Python, Node, Git and Docker for in this roadmap?	Python: my own scripts, API calls and agents. Node: runs JavaScript, I have it for my Expo app. Git: records versions of my files. Docker: runs n8n in an isolated container.
+n8n is built on Node. Why don't you have to manage Node for n8n?	n8n runs inside a Docker container that already includes its own Node, so the Node on my PC isn't used for it.
+How do you check whether Git is installed?	Run `git --version` in PowerShell. A version line means it's installed; a red "not recognised" error means it's missing.
+`docker --version` works but `docker ps` fails. What is the most likely reason?	Docker Desktop is closed or its engine isn't running. `--version` only checks the program exists; `docker ps` needs the engine.
+What is the current folder, and why does it matter for every command you type?	It's the folder PowerShell is "standing in", shown in the prompt. Every command runs there, so the same command can do different things from different folders.
+In `cd C:\dev`, which part is the command and which is the argument?	`cd` is the command; `C:\dev` is the argument (where to go).
+You want to know which folder you are in. Which command do you type, and what does `ls` do instead?	`pwd`. `ls` (or `dir`) lists what is inside the current folder; it doesn't tell you the folder's path.
+What is the difference between `ls` and `dir`?	None in PowerShell. They are two names for the same command.
+You are in `C:\dev\ai-automation-portfolio`. Which command takes you to `C:\dev`?	`cd ..`
+You type `cd nothere` and get a red error. Where are you now?	Still in the same folder as before. The command failed, so nothing moved.
+What is the difference between an absolute and a relative path?	An absolute path starts at the drive and means the same place from anywhere. A relative path starts from the current folder, so where it leads depends on where you are.
+You are in `C:\dev\exam\my notes`. Write a relative path to `C:\dev\ai-automation-portfolio`.	`cd ..\..\ai-automation-portfolio`
+Why does `cd C:\My Folder` fail, and how do you fix it?	The space splits it into two arguments. Put it in quotes: `cd "C:\My Folder"`.
+Which command makes a folder and which makes a file?	`mkdir` makes a folder; `New-Item` makes a file.
+You are in `C:\dev`. Write the commands to create a folder `exam`, go into it, create `y.txt` and list it.	`mkdir exam`, `cd exam`, `New-Item y.txt`, `ls`
+What do you do before running `Remove-Item folder -Recurse`, and why?	Run `pwd` and `ls` to confirm where I am and what is there, because the delete is permanent and includes everything inside.
+What does `-Recurse` add to `Remove-Item`?	It deletes the folder and everything inside it without asking for confirmation.
+What do Tab, the Up arrow and Ctrl+C each do?	Tab completes a name. Up arrow brings back the previous command. Ctrl+C stops the running program.
+PowerShell says a name "is not recognised". What does that usually mean?	A typo in the command, or the program isn't installed or not on PATH.
+How do you open a terminal in VS Code, and how do you open the current folder in VS Code from the terminal?	Press Ctrl and the backtick key in VS Code; from a terminal run `code .`.
+In one or two sentences: what does Git do, what does GitHub do, and how are they different?	Git is a program on my PC that records versions of my files. GitHub is a website that stores a copy of that history online. Git works without GitHub.
+What is a remote, and what is the opposite of it?	A remote is a copy of the repo stored somewhere else, here on GitHub. The opposite is the local copy on my own computer.
+What is a commit?	One saved version of the files, a save point in the history.
+Why is the repo private?	So only I (and anyone I invite) can see it. It's practice work and may hold things I don't want public. It can be made public later.
+What is a README, and why tick "Add a README" when creating the repo?	A text file that says what the project is, shown on the repo's front page. Ticking it gives the repo a first file so it isn't empty.
+How is a clone different from a ZIP download?	A ZIP is only files. A clone is a repo: it has the history and knows its remote.
+What is `.gitignore` for? Name two things you will put in it.	A list of files Git must never track or upload. Examples: a `.env` file with secrets, and the `.venv` folder.
+Why is it dangerous to commit a file that holds a secret?	Tracked files get uploaded to GitHub, so the secret ends up online where anyone with access (or bots, if public) could read it.
+Which .gitignore template do you pick for this repo, and why?	Python, because it already lists common Python files such as `.venv`.
+Where must you be to run `git status`, and what does a clean result tell you?	Inside the repo folder. Clean means nothing has changed and I'm in sync with the remote ("nothing to commit, working tree clean").
+Why will you run `git status` in later steps?	To check that files like `.env` and `.venv` do not show up, meaning Git is ignoring them.
+Which four settings do you choose when creating the repo?	Name `automation-portfolio`, Private, Add a README, and the Python .gitignore template.
+How do you check the clone worked using only PowerShell?	`cd C:\dev\automation-portfolio`, then `ls` shows README.md; `git status` says the branch is up to date and there is nothing to commit.
+What is the difference between Docker Desktop and the `docker` command?	Docker Desktop holds the engine that runs containers. The `docker` command is only a remote control that sends instructions to the engine.
+`docker run hello-world` says "failed to connect to the docker API". What do you do?	Open Docker Desktop and wait until the bottom left says Engine running, then run the command again.
+What is the difference between an image and a container?	An image is a frozen recipe (program plus what it needs). A container is a running copy made from it.
+You delete the n8n container. Is the image gone too?	No. The image stays, and I can make a new container from it.
+What does `-p 5678:5678` do?	It connects port 5678 on my PC (left) to port 5678 inside the container (right), so localhost:5678 reaches n8n.
+What changes if you use `-p 5679:5678`?	I browse to localhost:5679 instead. n8n inside the container still listens on 5678.
+What does "port is already allocated" mean?	Another program or container already uses that left-hand port on my PC. Check with `docker ps` or pick another left number.
+What does the volume protect?	My n8n account, workflows and credentials, which live in /home/node/.n8n and would otherwise vanish with the container.
+What happens to your workflows if you delete the container? If you delete the volume?	Container deleted: nothing lost, the volume still has them. Volume deleted: all my n8n data is gone.
+Read `-v n8n_data:/home/node/.n8n` in plain words.	Keep the folder /home/node/.n8n (inside the container) in a volume named n8n_data, outside the container.
+Which command makes the volume, and which one lists your volumes?	`docker volume create n8n_data` makes it; `docker volume ls` lists them.
+What do `--rm` and `-d` do?	`--rm` deletes the container when it stops. `-d` runs it in the background.
+What does `--name n8n` give you?	A name, so I can run `docker stop n8n` instead of using an ID.
+"container name already in use". What do you do?	An old container called n8n exists. Run `docker rm n8n` and try again.
+Why does the timezone matter?	Scheduled workflows run according to it, so a wrong timezone runs them at the wrong hour.
+Which command shows what is running, and which shows stopped containers too?	`docker ps` shows running ones; `docker ps -a` includes stopped ones.
+How do you see what the n8n container printed, and how do you stop and start it?	`docker logs n8n`, `docker stop n8n`, `docker start n8n`.
+Which flag sets an environment variable, and what is `-it` for?	`-e NAME=value` sets one. `-it` shows the container's output in my terminal so I can stop it with Ctrl+C.
+What is the difference between the foreground command and the daily one?	Foreground uses `-it --rm` (output in terminal, container deleted on stop). Daily uses `-d --restart unless-stopped` (background, restarts with Docker).
+After Ctrl+C, `docker ps` no longer lists n8n. Why, and is your account lost?	`--rm` removed the container when it stopped. The account is safe, because it is in the n8n_data volume.
+Where do you look to confirm n8n finished starting in the foreground?	A line in the output saying the editor is accessible at http://localhost:5678.
+Why do we use a virtual environment?	So each project has its own private set of packages and projects can't break each other with conflicting versions.
+Why is `.venv` in `.gitignore`?	It's large, can be rebuilt from requirements.txt, and is specific to my PC, so it shouldn't be tracked or uploaded.
+What is pip, and where does it get packages from?	pip installs Python packages. It downloads them from PyPI, the public package library.
+What is `requests` for?	Making HTTP calls (to websites and APIs) from Python.
+How do you know the environment is active?	The prompt starts with `(.venv)`.
+What happens if you forget to activate before `pip install`?	The package installs into the global Python instead of the project's environment, and the project won't find it.
+Activate.ps1 is blocked by Windows. What do you run?	`Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`, once, then activate again.
+Write the two commands that create the environment and activate it, starting in the repo folder.	`python -m venv .venv`, then `.\.venv\Scripts\Activate.ps1`.
+How do you leave the environment?	Type `deactivate`.
+When do you create the venv, and when do you activate it?	Create it once per project. Activate it every time I open a new terminal for that project.
+What is requirements.txt for?	It lists the project's packages and versions so the environment can be rebuilt with one command.
+What does `ModuleNotFoundError: No module named 'requests'` usually mean here?	requests isn't installed in the Python I'm running, often because I installed without the venv active.
+What does the `>` do in `pip freeze > requirements.txt`?	It sends the command's output into the file instead of printing it on screen.
+`git status` lists `.venv`. What is wrong and how do you fix it?	`.venv` isn't in `.gitignore`. Add a line `.venv` to it.
+What could go wrong if you committed your API key to a public repo?	Bots find it within minutes and use my account, so I could be billed, rate-limited or banned.
+A key leaked. What do you do?	Delete it in the provider's console and create a new one. Removing it from the files isn't enough, because it stays in the Git history.
+Why is there a `.env.example` file, and why is it committed while `.env` is not?	It lists the variable names without values so others know what to set, and it holds no secret. `.env` holds the real key, so it stays out of Git.
+How do you check that Git ignores your `.env`?	Run `git status`. `.env` must not appear. If it does, add `.env` to `.gitignore`.
+What is wrong with `GEMINI_API_KEY = "abc"` in a .env file?	The format is `NAME=value` with no spaces and no quotes.
+Why do you test with `print(bool(key))` instead of `print(key)`?	So the secret is never shown on screen or in screenshots, while I still learn whether it loaded.
+The test prints `False`. What do you check?	That I'm in the folder containing `.env`, the name matches exactly (GEMINI_API_KEY), and the file has `NAME=value` with no spaces or quotes.
+Can you send a client's real data through your free learning key?	No. The free key is for my own practice with fake data. Client use needs a paid account, ideally the client's own.
+Which files does Claude check, and which does it never need to see?	It checks `.env.example` exists and `.gitignore` lists `.env`. It never needs to see `.env` or the key itself.
+Why does a specific headline beat a general one?	Clients search for a problem, and a specific headline shows I solve that problem. A general one doesn't stand out or match their search.
+What three things does a good headline say?	Who I help, what I do, and with which tools.
+Which of these is an overclaim for you: "mathematics degree", "5 years running an automation agency", "built an app with AI-assisted development"?	"5 years running an automation agency". The other two are things I can show.
+What is the test for any sentence in your overview?	Could a client ask me to prove it, and could I?
+What are the three parts of the overview?	The problem I solve, how I solve it, and proof.
+Why does Claude interview you before you write?	So the wording comes from my real experience instead of invented claims.
+Why check Upwork's pending steps now?	Identity verification and profile review can take days, so starting early avoids delay when I want to send proposals.
+You start a second n8n next to the first. Which three parts of the command must change?	The container name, the volume name, and the left (host) port number.
+Why does the right-hand port stay 5678?	n8n always listens on 5678 inside the container. Only the host side can change.
+Which three commands clean up the test, and which volume must you never remove?	`docker stop n8n-test`, `docker rm n8n-test`, `docker volume rm n8n_test`. Never `n8n_data`.
+What do you see at localhost:5679, and what does that prove?	A fresh n8n asking for a new account. It proves the new volume is separate from my real data.
+Write the `-p`, `-v` and `--name` parts of the second n8n command.	`-p 5679:5678 -v n8n_test:/home/node/.n8n --name n8n-test`
+Why do you stop the test container before removing it, and what must stay untouched?	`docker stop` stops it before `docker rm` deletes it. The real container and the `n8n_data` volume stay untouched.
+Why dictate instead of typing your explanation?	Speaking shows gaps that typing hides, because I can't stop to look things up or tidy my words.
+How do you start voice typing on Windows 11?	Click in a text box and press Win+H.
+What do you need to pass the Phase 0 exam, besides the score?	At least 80% (8 of 10) and the flashcards made from my mistakes.
+Why does the examiner stop when you start guessing?	A guess isn't knowledge. Stopping there shows my real level.
+What does the diagnostician look for?	The single root misunderstanding behind several of my mistakes.
+What is spaced repetition, and when do you review new cards?	Reviewing a card just before I'd forget it. Same day, next day, after 3 days, a week and two weeks.

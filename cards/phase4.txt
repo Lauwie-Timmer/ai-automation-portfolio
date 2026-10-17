@@ -1,0 +1,23 @@
+What is idempotency in a workflow? || Running it twice does not do the thing twice, for example by marking rows as notified.
+What is least privilege? || Give a tool only the access it needs. For example, don't leave a key that can read and write your whole production database in a tool.
+What does the Supabase service_role key do? || It bypasses row-level security, so it must stay in a trusted server or n8n credential, never in a repo or chat.
+Polling vs webhook for a localhost n8n? || Your n8n can call out and poll, but outside services can't call a localhost webhook.
+When may you email people who signed up? || Only if the signup told them they'd hear from you. When unsure, notify only yourself.
+SQL: what do the main verbs do? || SELECT reads, INSERT adds, UPDATE changes, DELETE removes, CREATE TABLE makes a table.
+Why must UPDATE and DELETE have a WHERE? || Without it they change or remove every row. Run a SELECT with the same WHERE first.
+Primary key vs foreign key? || A primary key identifies one row. A foreign key points to a row in another table, which is what a JOIN follows.
+What is Row Level Security? || Rules in Supabase that decide which rows each user may see.
+Why use SQL parameters? || Pasting text into a SQL string invites SQL injection.
+What is pgvector? || A Postgres extension that adds a vector column type and similarity search, used to store embeddings.
+Why must embedding size match? || The vector(N) size has to equal the embedding model's output, or search breaks.
+Six things to check in an API doc? || Authentication, base URL with an example, the endpoints you need, rate limits, pagination, and webhooks.
+Why make a booking workflow safe to run twice? || Webhooks can arrive twice, which would create duplicates.
+How does argparse help a script? || It lets you run it with options such as --days 30.
+What does pytest test in Project B? || The calculation function, not the API call.
+Why does a 30-day exchange rate request return about 20 days? || Rates exist only for working days.
+Five parts of a case study? || Problem, what I built, tools, result (honest about sample data), and what I'd do next.
+AI disclosure checklist for a chatbot? || First message says it is an AI, never pretends to be a person, says what it can do, offers a human route, links a privacy notice, and logs conversations for review.
+Why not connect a first assistant to patient records? || Health data is a special category under GDPR. Use general information only.
+Make vs Zapier vs n8n words for a workflow? || n8n: workflow. Make: scenario. Zapier: Zap.
+What do WhatsApp business bots need? || A verified business, a phone number, approved message templates, per-message fees and customer opt-in.
+Why is delay the problem for voice agents? || Speech-to-text, the model and text-to-speech chain together, so each step adds waiting.

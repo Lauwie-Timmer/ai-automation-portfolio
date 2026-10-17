@@ -1,0 +1,22 @@
+What is Git? || The program on your computer that records versions (commits) of your files.
+What is GitHub? || A website that stores a copy of your Git history online (a remote). It is your backup and how you share work.
+What is a repository? || One project folder plus its full history.
+What does cloning do? || Downloads a repo from GitHub with its history, and links your copy to the remote.
+What is .gitignore for? || It lists files Git must never track or upload, such as .env and the .venv folder.
+What does git status show? || Which files changed, which are tracked, and which are ignored.
+Docker: image vs container? || An image is a frozen recipe (a program plus everything it needs). A container is a running copy made from it.
+You see "failed to connect to the docker API". What is wrong? || Docker Desktop (the engine) isn't running. The docker command is only the remote control.
+What does -p 5679:5678 mean? || Port 5679 on your PC is connected to port 5678 inside the container (left is your PC, right is the container).
+What does localhost mean? || Your own computer.
+What does a Docker volume protect? || Data such as your n8n account, workflows and saved logins, which would vanish when the container is removed.
+What do the flags --rm and -d do? || --rm deletes the container when it stops. -d runs it in the background.
+What does docker ps show? || The running containers. Add -a to include stopped ones.
+Why use a Python virtual environment? || It's a private folder of packages for one project, so projects don't break each other.
+What does activating a venv do? || The terminal uses that folder's Python. The prompt starts with (.venv).
+What is requirements.txt? || A list of a project's packages, so the environment can be rebuilt. Made with pip freeze > requirements.txt.
+What is an API key? || A secret that lets code use a service. Anyone who has it can use your account.
+Where do secrets go, and what must never happen? || In a .env file that Git ignores. Never commit them or paste them into a chat.
+What is .env.example? || A copy of .env with the names but no values. You commit it so others know what is needed.
+How may you use the free Gemini key? || Only for your own practice with fake data. Anything a client or their customers use must run on a paid account.
+What does Ctrl+C do in a terminal? || Stops the running program.
+Absolute vs relative path? || An absolute path starts at the drive (C:\dev). A relative path starts from where you are.

@@ -1,0 +1,85 @@
+#separator:tab
+#html:false
+What are the five documents in a templates pack?	Kickoff questionnaire, scope of work, change request, handover document and update message.
+What does a change request do?	It states what is asked and what it changes in time and price, and needs a yes before you start. It handles scope creep politely.
+How often should you update a client?	Every 2 to 3 days, even if it's "no change, testing today".
+When do you ask for a review?	After the work is accepted, and never in exchange for anything.
+Why record a short video walk-through at handover?	The client can see how it works later, and it proves what was delivered.
+What does the n8n licence allow for consultants?	Building workflows for clients, when the client owns the instance or the client never accesses your n8n.
+What does the n8n licence not allow without a paid licence?	Hosting many clients' workflows or credentials on an n8n you run and selling it as a service, or embedding n8n in your own product.
+Whose accounts and API keys go in a client workflow?	The client's own, so you never carry their costs or risk.
+In GDPR terms, what are you for a client's customer data?	Usually a processor. Use as little personal data as possible and agree handling in writing.
+What does EU AI Act Article 50 ask of a chatbot?	Tell people they are talking to an AI unless it is obvious, and offer a human route. Check the current text.
+Four ways a client's n8n can be hosted?	n8n Cloud, a server the client owns, you hosting it for several clients (restricted), or the client's own existing tool.
+Why does the n8n encryption key matter?	Saved logins are encrypted with it. Lose the data volume and every saved login becomes unreadable, so back it up.
+What is Docker Compose?	One file that describes your containers, so a server can be rebuilt with docker compose up -d.
+What is Kubernetes, and do you need it?	A system that runs many containers across many servers. Small clients don't need it. Learn it only if a project requires it.
+Three monitoring checks for a client's automation?	AI provider spending limit, automatic clean-up of old execution data, and an uptime check on /healthz.
+Why a pull request instead of committing to main?	Someone reads the change, so mistakes get caught and knowledge spreads.
+What causes a merge conflict?	Two people changed the same lines and Git can't choose.
+Where do team secrets live?	In a shared password manager, never in chat or the repo.
+Niche formula?	I help [who] [get result] by [method].
+Why use evidence to choose a niche?	Replies, calls and jobs show what the market wants, so you don't guess.
+Name the five templates.	Kickoff questions, scope of work, change request, handover document and update message.
+Why not paste a template unchanged?	Each client and job differs; I adapt it, otherwise it can say things that don't apply or miss what matters.
+What six topics does the kickoff questionnaire cover?	The problem and success, tools and who owns accounts, data and whether it's personal, who approves and the contact, deadline, and what is out of scope.
+Name the parts of a scope of work.	Goal, deliverables, exclusions, what I need from the client, milestones with prices, rounds of changes, how acceptance works, and AI and data handling.
+What does a change request contain?	What's asked, the change in time and price, and the client's yes or no before I start.
+What must a handover never contain?	The secrets themselves; it says where the logins live.
+Write the four lines of an update message.	Done since last time; next steps; anything blocked; the date of the next update.
+What is the worked example and who reviews it?	A scope of work and a handover for Project B as if hired, reviewed by Claude as a client who was burned before.
+What do you confirm in writing before starting?	The scope, what I need from the client, the first milestone and its date.
+How often do you send updates and what if nothing changed?	Every 2 to 3 days; send it anyway ("no change, testing today").
+What do you do when you're stuck or late?	Say so early and give a new date.
+What three things do you do before you deliver?	Test with the client's sample data, write a short handover, and record a 3-minute video walk-through.
+When may you ask for a review and what must you never do?	After the work is accepted, kindly. Never offer anything in exchange.
+What are the final three steps on the checklist?	Accepted, paid, then ask for the review.
+What do you do before writing about a client's project?	Ask the client for permission.
+What do you remove unless the client agrees?	Their name, their data and anything that identifies them.
+When do you write the case study?	Within a week of the job ending, while I remember it.
+What does the check mark?	Anything that might identify the client and anything I can't prove.
+Who answers your tax and VAT questions?	An accountant or the tax authority. Claude only helps me prepare the questions.
+Name six questions for the accountant.	Does Upwork work fit my registration; how to invoice; VAT on services to EU and non-EU business clients (reverse charge); whether KOR applies; EU sales listings; how Upwork's fee is booked; income tax and deductions; which records to keep.
+In a client's workflow with their customers' data, who is the controller and who the processor?	The client is the controller; I'm usually the processor handling data for them.
+Name four rules for handling a client's personal data.	Use as little as possible; keep it out of prompts; store no more than needed; have the client agree to how I handle it in writing. No health data without proper advice.
+Is building n8n workflows for money for clients allowed?	Yes, charging for workflow creation, setup and maintenance is allowed under the Community license FAQ.
+What is not allowed?	Hosting n8n as a service so clients build their own workflows, white-labelling it, or using enterprise features without a licence.
+What is the key question?	Who builds and controls the workflows: if I do and the client only sees results, it's consulting; if clients use n8n themselves as a hosted service, it isn't allowed.
+What does Article 50 ask of a chatbot?	Tell users at first contact they're talking to an AI (unless obvious) and offer a human route; it applies from 2 August 2026.
+Whose API keys go in a client's workflow?	The client's own, so I don't carry their costs or risk.
+What three things do you produce in p6-3?	A list of accountant questions (sent or booked), three sentences on the n8n licence, and client-data-rules.md.
+Why can't your laptop run a client's automation?	It isn't on all the time, backed up or updated, and outside services can't reach localhost.
+What do webhooks from outside services need?	A public HTTPS URL.
+Name the four hosting options.	n8n Cloud, a client-owned small server (VPS), me hosting for several clients, and the client's existing tool such as Make or Zapier.
+Which option is risky under the n8n licence and why?	Me hosting for several clients, because hosting n8n as a service for clients isn't allowed without a paid licence.
+Roughly what do n8n Cloud and a small VPS cost per month?	Cloud Starter about 20 euros (2,500 executions); a small VPS roughly 4 to 10 euros (prices moved in 2026; check live prices today).
+What does Docker Compose do and which command starts it?	It describes containers in one file so a server can be rebuilt with one command: `docker compose up -d`.
+What is Kubernetes and does a small client need it?	It runs and manages many containers across many servers. A small client's few workflows don't need it; it adds complexity and cost.
+Which command starts a compose project and which stops and removes its containers?	`docker compose up -d` starts it; `docker compose down` stops and removes the containers.
+Name the three monitoring checks.	A spending limit and alerts in the AI provider's console, execution clean-up in n8n's settings, and an uptime ping on /healthz.
+What are n8n's default execution-pruning values?	Pruning is on; old executions are deleted after 336 hours (14 days) and the limit is 10,000 executions.
+What is the difference between /healthz and /healthz/readiness?	/healthz returns 200 if n8n is reachable; /healthz/readiness returns 200 only if the database is connected and migrated.
+What happens to the saved logins if the server disk dies and there's no backup of the key?	They become unreadable and can't be recovered (unless a decrypted export was made earlier).
+What do CLI exports not include?	Users, execution history, variables and the encryption key.
+How do you charge for upkeep after handover?	Monthly maintenance is a paid extra, quoted separately.
+What are the four things you write in p6-4?	A hosting options page with live prices, a 4-sentence client answer, the three monitoring checks with where each is set, and a 3-sentence Compose/Kubernetes explanation.
+Why agree the rules early?	It's much easier before there's any money, and written rules protect the friendship.
+List five decisions the team agreement covers.	Roles, how work is divided, how money is split and paid out, what happens if someone leaves, and loose team versus company.
+How do you share logins and keys in a team?	Through a shared password manager and shared accounts with access control, never over chat.
+What are the five agenda points?	Skills, roles, money split, first target client type, and how to review each other's work.
+Who decides the roles and the money split?	The four of us. Claude only helps prepare options and never decides.
+What does the shared repo hold?	The team's scripts, exported workflows, templates and case studies.
+How do teammates get access?	I add them as collaborators; each clones the repo to their own computer.
+Why does nobody commit straight to `main`?	Changes go through a branch and a pull request so a teammate reviews them first; that catches mistakes.
+List the commands to start a change and upload it.	`git switch main`, `git pull`, `git switch -c <branch>`, edit, `git add .`, `git commit -m "..."`, `git push -u origin <branch>`, then open a PR.
+What do you leave in a review?	At least one question and one suggestion, about the change and not the person.
+When does a merge conflict happen?	When two branches change the same lines, so Git can't choose.
+What do the markers mean and how do you finish?	The part after `<<<<<<<` is one side, after `=======` the other. I choose the final text, delete the markers, `git add .` and `git commit`.
+Someone committed an API key. What do you do?	Rotate the key straight away (new key, old disabled). Deleting the file isn't enough because it stays in the history.
+List the five rules.	No commits straight to main; small PRs; clear commit messages; never commit secrets or exported credentials; every PR reviewed by someone else.
+Where do team logins and API keys live?	In a shared password manager, never in chat or the repo.
+What happens after the two practice PRs are opened?	Merge the first, then resolve the conflict in the second together.
+What is the formula for a one-sentence offer?	I help [who] [get result] by [method], where the result is something the client counts.
+Is a niche a limit?	No; it makes you easy to remember and refer.
+Name three kinds of evidence for a niche.	Which jobs got replies, which calls felt natural, and which projects I enjoyed (and which packages got interest).
+What are the three steps?	Write three candidate one-sentence offers from my evidence, pick one to try for a month, and update my headline and team pitch.
